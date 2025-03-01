@@ -1,4 +1,4 @@
-import axios from 'axios';
+const axios = require('axios'); // Cambiar import por require
 
 // Configuración base para las solicitudes
 const API_URL = 'http://localhost:5000/api'; // Aquí debes poner la URL de tu servidor
@@ -40,4 +40,35 @@ const createPaymentIntent = async (amount) => {
   return response.data;
 };
 
-export { registerUser, loginUser, getProducts, getProductById, createPaymentIntent };
+// Carrito
+
+// Crear o actualizar el carrito
+const createOrUpdateCart = async (userId, productId, quantity) => {
+  const response = await api.post('/cart', { userId, productId, quantity });
+  return response.data;
+};
+
+// Obtener el carrito de un usuario
+const getCart = async (userId) => {
+  const response = await api.get(`/cart/${userId}`);
+  return response.data;
+};
+
+// Eliminar un producto del carrito
+const removeProductFromCart = async (userId, productId) => {
+  const response = await api.delete(`/cart/${userId}/${productId}`);
+  return response.data;
+};
+
+// Exportar funciones
+module.exports = {
+  registerUser, 
+  loginUser, 
+  getProducts, 
+  getProductById, 
+  createPaymentIntent, 
+  createOrUpdateCart,
+  getCart,
+  removeProductFromCart
+}; // Cambiar export por module.exports
+

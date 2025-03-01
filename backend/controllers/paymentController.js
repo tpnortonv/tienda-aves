@@ -15,6 +15,7 @@ const createPaymentIntent = async (req, res) => {
 
     // Retornar el client secret para completar el pago en el frontend
     res.status(200).json({
+      message:'Intento de pago creado exitosamente',
       clientSecret: paymentIntent.client_secret,
     });
   } catch (error) {

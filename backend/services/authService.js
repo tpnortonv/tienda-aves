@@ -1,4 +1,4 @@
-import { registerUser, loginUser } from './api';
+const { registerUser, loginUser } = require('./api'); // Cambiar import por require
 
 // Registro de usuario
 const register = async (userData) => {
@@ -34,4 +34,4 @@ const logout = () => {
   localStorage.removeItem('authToken');
 };
 
-export { register, login, getAuthToken, logout };
+module.exports = { register, login, getAuthToken, logout }; // Cambiar export por module.exports

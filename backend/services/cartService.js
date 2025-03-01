@@ -1,144 +1,65 @@
-/*import { getAuthToken } from './authService';
-import { api } from './api';
+const Cart = require('../models/Cart');
 
-// Obtener los productos del carrito del backend
-const getCart = async () => {
-  const token = getAuthToken();
+// Función para crear o actualizar un carrito
+const createOrUpdateCart = async (userId, productId, quantity) => {
   try {
-    const response = await api.get('/cart', {
-      headers: {
-        'x-auth-token': token, // Enviar el token en las cabeceras
-      },
-    });
-    return response.data; // Retorna los datos del carrito
-  } catch (error) {
-    throw new Error('Error al obtener el carrito: ' + error.response?.data?.message || error.message);
-  }
-};
+    let cart = await Cart.findOne({ userId });
 
-// Agregar un producto al carrito
-const addToCart = async (productId, quantity) => {
-  const token = getAuthToken();
-  try {
-    const response = await api.post(
-      '/cart',
-      { productId, quantity },
-      {
-        headers: {
-          'x-auth-token': token, // Enviar el token en las cabeceras
-        },
+    if (cart) {
+      const productIndex = cart.products.findIndex(
+        (item) => item.productId.toString() === productId
+      );
+
+      if (productIndex !== -1) {
+        cart.products[productIndex].quantity += quantity; // Sumar cantidad
+      } else {
+        cart.products.push({ productId, quantity }); // Agregar producto
       }
+    } else {
+      cart = new Cart({
+        userId,
+        products: [{ productId, quantity }],
+      });
+    }
+
+    await cart.save();
+    return cart;
+  } catch (error) {
+    throw new Error('Error al crear o actualizar el carrito');
+  }
+};
+
+// Función para obtener el carrito de un usuario
+const getCart = async (userId) => {
+  try {
+    const cart = await Cart.findOne({ userId }).populate('products.productId');
+    if (!cart) {
+      throw new Error('Carrito no encontrado');
+    }
+    return cart;
+  } catch (error) {
+    throw new Error('Error al obtener el carrito');
+  }
+};
+
+// Función para eliminar un producto del carrito
+const removeProductFromCart = async (userId, productId) => {
+  try {
+    const cart = await Cart.findOne({ userId });
+    if (!cart) {
+      throw new Error('Carrito no encontrado');
+    }
+
+    cart.products = cart.products.filter(
+      (item) => item.productId.toString() !== productId
     );
-    return response.data; // Retorna la respuesta después de agregar el producto
+
+    await cart.save();
+    return cart;
   } catch (error) {
-    throw new Error('Error al agregar al carrito: ' + error.response?.data?.message || error.message);
+    throw new Error('Error al eliminar el producto del carrito');
   }
 };
 
-// Eliminar un producto del carrito
-const removeFromCart = async (productId) => {
-  const token = getAuthToken();
-  try {
-    const response = await api.delete(`/cart/${productId}`, {
-      headers: {
-        'x-auth-token': token, // Enviar el token en las cabeceras
-      },
-    });
-    return response.data; // Retorna la respuesta después de eliminar el producto
-  } catch (error) {
-    throw new Error('Error al eliminar del carrito: ' + error.response?.data?.message || error.message);
-  }
-};
+module.exports = { createOrUpdateCart, getCart, removeProductFromCart };
 
-// Actualizar la cantidad de un producto en el carrito
-const updateQuantity = async (productId, quantity) => {
-  const token = getAuthToken();
-  try {
-    const response = await api.put(
-      `/cart/${productId}`,
-      { quantity },
-      {
-        headers: {
-          'x-auth-token': token, // Enviar el token en las cabeceras
-        },
-      }
-    );
-    return response.data; // Retorna la respuesta después de actualizar la cantidad
-  } catch (error) {
-    throw new Error('Error al actualizar la cantidad en el carrito: ' + error.response?.data?.message || error.message);
-  }
-};
-
-export { getCart, addToCart, removeFromCart, updateQuantity };
-import { getAuthToken } from './authService';
-import { api } from './api';
-
-// Obtener los productos del carrito del backend
-const getCart = async () => {
-  const token = getAuthToken();
-  try {
-    const response = await api.get('/cart', {
-      headers: {
-        'x-auth-token': token, // Enviar el token en las cabeceras
-      },
-    });
-    return response.data; // Retorna los datos del carrito
-  } catch (error) {
-    throw new Error('Error al obtener el carrito: ' + error.response?.data?.message || error.message);
-  }
-};
-
-// Agregar un producto al carrito
-const addToCart = async (productId, quantity) => {
-  const token = getAuthToken();
-  try {
-    const response = await api.post(
-      '/cart',
-      { productId, quantity },
-      {
-        headers: {
-          'x-auth-token': token, // Enviar el token en las cabeceras
-        },
-      }
-    );
-    return response.data; // Retorna la respuesta después de agregar el producto
-  } catch (error) {
-    throw new Error('Error al agregar al carrito: ' + error.response?.data?.message || error.message);
-  }
-};
-
-// Eliminar un producto del carrito
-const removeFromCart = async (productId) => {
-  const token = getAuthToken();
-  try {
-    const response = await api.delete(`/cart/${productId}`, {
-      headers: {
-        'x-auth-token': token, // Enviar el token en las cabeceras
-      },
-    });
-    return response.data; // Retorna la respuesta después de eliminar el producto
-  } catch (error) {
-    throw new Error('Error al eliminar del carrito: ' + error.response?.data?.message || error.message);
-  }
-};
-
-// Actualizar la cantidad de un producto en el carrito
-const updateQuantity = async (productId, quantity) => {
-  const token = getAuthToken();
-  try {
-    const response = await api.put(
-      `/cart/${productId}`,
-      { quantity },
-      {
-        headers: {
-          'x-auth-token': token, // Enviar el token en las cabeceras
-        },
-      }
-    );
-    return response.data; // Retorna la respuesta después de actualizar la cantidad
-  } catch (error) {
-    throw new Error('Error al actualizar la cantidad en el carrito: ' + error.response?.data?.message || error.message);
-  }
-};
-
-export { getCart, addToCart, removeFromCart, updateQuantity };*/

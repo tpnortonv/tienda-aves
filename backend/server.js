@@ -9,6 +9,7 @@ const mongoose = require('mongoose');
 const authRoutes = require('./routes/authRoutes');
 const productRoutes = require('./routes/productRoutes');
 const paymentRoutes = require('./routes/paymentRoutes');
+const cartRoutes = require('./routes/cartRoutes');
 
 // Crear la aplicación Express
 const app = express();
@@ -21,6 +22,7 @@ app.use(express.json()); // Para poder parsear los datos JSON en las peticiones
 app.use('/api/auth', authRoutes); // Ruta para autenticación
 app.use('/api/products', productRoutes); // Ruta para productos
 app.use('/api/payments', paymentRoutes); // Ruta para pagos
+app.use('/api/cart', cartRoutes); 
 
 // Conectar a MongoDB
 mongoose
