@@ -16,7 +16,10 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  // Otros campos relacionados con el usuario, como roles o fechas de creación, se pueden agregar según sea necesario
+  customerId: { // 🔹 Guardamos el ID del cliente en Stripe
+    type: String,
+    default: null
+  }
 }, {
   timestamps: true, // Para agregar los campos 'createdAt' y 'updatedAt'
 });
