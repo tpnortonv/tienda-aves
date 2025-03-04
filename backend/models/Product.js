@@ -20,9 +20,18 @@ const productSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  stripeProductId: { // 🔥 Agregado: ID del producto en Stripe
+    type: String,
+    required: false, // No es obligatorio, pero se debería llenar
+  },
+  stripePriceId: { // 🔥 Agregado: ID del precio en Stripe
+    type: String,
+    required: false,
+  },
 }, { timestamps: true });
 
 // Crear el modelo de Producto
 const Product = mongoose.model('Product', productSchema);
 
 module.exports = Product;
+
