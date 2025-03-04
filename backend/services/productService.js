@@ -4,11 +4,18 @@ const Product = require("../models/Product");
 // 🔹 Crear un producto en MongoDB y en Stripe
 const createProduct = async ({ name, description, price, imageUrl }) => {
     try {
+        // 🔍 LOG PARA DEPURACIÓN
+        console.log("🔹 Datos recibidos en createProduct:", { name, description, price, imageUrl });
+
+        // Validar que los datos están llegando correctamente
+        if (!name || !description || !price || !imageUrl) {
+            throw new Error("Todos los campos (name, description, price, imageUrl) son obligatorios");
+        }
+
         // Crear el producto en Stripe
         const stripeProduct = await stripe.products.create({
             name,
-            description,
-            images: [imageUrl],
+            images: [imageUrl], // 🔥 Eliminé description para evitar errores en Stripe
         });
 
         // Crear el precio en Stripe
@@ -28,8 +35,10 @@ const createProduct = async ({ name, description, price, imageUrl }) => {
             stripePriceId: stripePrice.id,
         });
 
+        console.log("✅ Producto creado con éxito en MongoDB y Stripe:", newProduct);
         return newProduct;
     } catch (error) {
+        console.error("❌ Error en createProduct:", error.message);
         throw new Error(`Error al crear el producto en Stripe: ${error.message}`);
     }
 };
@@ -55,10 +64,9 @@ const updateProduct = async (id, updateData) => {
         throw new Error("El producto no tiene un ID de Stripe asociado");
     }
 
-    // 🔥 Actualizar en Stripe solo si hay cambios en nombre, descripción o imagen
+    // 🔥 Actualizar en Stripe solo si hay cambios en nombre, imagen
     const updatedFields = {};
     if (updateData.name) updatedFields.name = updateData.name;
-    if (updateData.description) updatedFields.description = updateData.description;
     if (updateData.imageUrl) updatedFields.images = [updateData.imageUrl];
 
     if (Object.keys(updatedFields).length > 0) {
@@ -131,4 +139,5 @@ module.exports = {
     updateProduct,
     deleteProduct,
 };
+
 
