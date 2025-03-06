@@ -1,36 +1,31 @@
-import { useContext } from 'react';
-import { Link } from 'react-router-dom';
-import { AuthContext } from '../context/AuthContext';
-import { CartContext } from '../context/CartContext';
+import { Link } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
 const Header = () => {
-  const { user, handleLogout } = useContext(AuthContext);
-  const { cart } = useContext(CartContext);
+  const { user, handleLogout } = useAuth();
 
   return (
-    <header className="header">
-      <div className="container">
-        <Link to="/" className="logo">
-          🦜 Tienda de Aves
-        </Link>
-        <nav>
-          <Link to="/">Inicio</Link>
-          {user ? (
-            <>
-              <span>Hola, {user.name}</span>
-              <Link to="/checkout">Carrito ({cart.length})</Link>
-              <button onClick={handleLogout}>Cerrar sesión</button>
-            </>
-          ) : (
-            <>
-              <Link to="/login">Iniciar sesión</Link>
-              <Link to="/signup">Registrarse</Link>
-            </>
-          )}
-        </nav>
-      </div>
+    <header>
+      <nav>
+        <Link to="/">Home</Link>
+        <Link to="/cart">Carrito</Link>
+        {user ? (
+          <>
+            <span>Bienvenido, {user.name}</span>
+            <button onClick={handleLogout}>Cerrar sesión</button>
+          </>
+        ) : (
+          <>
+            <Link to="/login">Iniciar Sesión</Link>
+            <Link to="/signup">Registrarse</Link>
+          </>
+        )}
+      </nav>
     </header>
   );
 };
 
 export default Header;
+
+
+

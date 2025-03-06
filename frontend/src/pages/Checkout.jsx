@@ -1,24 +1,33 @@
-import { useContext } from 'react';
-import Cart from '../components/Cart';
-import CheckoutForm from '../components/CheckoutForm';
-import { CartContext } from '../context/CartContext';
+import { useCart } from "../context/CartContext";
+import { useAuth } from "../context/AuthContext";
+import CheckoutForm from "../components/CheckoutForm";
 
 const Checkout = () => {
-  const { cart } = useContext(CartContext);
+  const { cart } = useCart();
+  const { user } = useAuth();
+
+  if (!cart || cart.length === 0) {
+    return <p>Tu carrito está vacío.</p>;
+  }
 
   return (
-    <div className="checkout">
-      <h2>Proceso de Compra</h2>
-      {cart.length === 0 ? (
-        <p>Tu carrito está vacío</p>
+    <div className="checkout-container">
+      <h2>Checkout</h2>
+      <ul>
+        {cart.map((item) => (
+          <li key={item.productId._id}>
+            {item.productId.name} - ${item.productId.price} x {item.quantity}
+          </li>
+        ))}
+      </ul>
+      {user ? (
+        <CheckoutForm />
       ) : (
-        <>
-          <Cart />
-          <CheckoutForm />
-        </>
+        <p>Por favor, inicia sesión para completar la compra.</p>
       )}
     </div>
   );
 };
 
 export default Checkout;
+

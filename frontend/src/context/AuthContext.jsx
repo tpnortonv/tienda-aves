@@ -1,49 +1,38 @@
-import { createContext, useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { login, register } from '../services/authServiceF';
+import { createContext, useContext, useState, useEffect } from "react";
+import { login, logout, register, getCurrentUser } from "../services/authServiceF";
 
-export const AuthContext = createContext();
+const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  const navigate = useNavigate();
 
   useEffect(() => {
-    const storedUser = localStorage.getItem('user');
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
-    }
+    setUser(getCurrentUser());
   }, []);
 
   const handleLogin = async (email, password) => {
-    try {
-      const data = await login({ email, password });
-      setUser(data.user);
-      localStorage.setItem('user', JSON.stringify(data.user));
-      localStorage.setItem('token', data.token);
-      navigate('/');
-    } catch (error) {
-      console.error('Error al iniciar sesión:', error);
+    const response = await login(email, password);
+    if (response && response.user) {
+      setUser(response.user);
+      return response.user;
+    } else {
+      throw new Error("Error al iniciar sesión");
     }
   };
 
   const handleRegister = async (name, email, password) => {
-    try {
-      const data = await register({ name, email, password });
-      setUser(data.user);
-      localStorage.setItem('user', JSON.stringify(data.user));
-      localStorage.setItem('token', data.token);
-      navigate('/');
-    } catch (error) {
-      console.error('Error al registrar usuario:', error);
+    const response = await register(name, email, password);
+    if (response && response.user) {
+      setUser(response.user);
+      return response.user;
+    } else {
+      throw new Error("Error al registrar usuario");
     }
   };
 
   const handleLogout = () => {
+    logout();
     setUser(null);
-    localStorage.removeItem('user');
-    localStorage.removeItem('token');
-    navigate('/login');
   };
 
   return (
@@ -52,3 +41,21 @@ export const AuthProvider = ({ children }) => {
     </AuthContext.Provider>
   );
 };
+
+export const useAuth = () => useContext(AuthContext);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

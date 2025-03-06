@@ -25,7 +25,9 @@ const Home = () => {
         {products.length === 0 ? (
           <p>No hay productos disponibles</p>
         ) : (
-          products.map((product) => <ProductCard key={product._id} product={product} />)
+          products.map((product) => (
+            <ProductCard key={product._id} product={product} />
+          ))
         )}
       </div>
     </div>

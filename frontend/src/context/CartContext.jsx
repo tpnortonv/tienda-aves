@@ -1,54 +1,76 @@
-import { createContext, useState, useEffect } from 'react';
-import { getCart, createOrUpdateCart, removeProductFromCart } from '../services/cartServiceF';
+import { createContext, useContext, useState, useEffect } from "react";
+import { getCart, addToCart, removeFromCart } from "../services/cartServiceF";
+import { useAuth } from "./AuthContext";
 
-export const CartContext = createContext();
+const CartContext = createContext();
 
 export const CartProvider = ({ children }) => {
+  const { user } = useAuth();
   const [cart, setCart] = useState([]);
 
   useEffect(() => {
     const fetchCart = async () => {
-      const user = JSON.parse(localStorage.getItem('user'));
-      if (user) {
-        try {
-          const data = await getCart(user.id);
-          setCart(data.cart.products);
-        } catch (error) {
-          console.error('Error al obtener el carrito:', error);
-        }
+      if (!user?._id) {
+        setCart([]);
+        return;
+      }
+
+      try {
+        const userCart = await getCart(user._id);
+        setCart(userCart.cart.products || []);
+      } catch (error) {
+        console.error("❌ Error al obtener el carrito:", error.message);
+        setCart([]);
       }
     };
 
     fetchCart();
-  }, []);
+  }, [user]);
 
-  const addToCart = async (productId, quantity) => {
-    const user = JSON.parse(localStorage.getItem('user'));
-    if (!user) return;
+  const handleAddToCart = async (productId, quantity = 1) => {
+    if (!user?._id) return console.error("❌ Usuario no autenticado.");
 
     try {
-      const data = await createOrUpdateCart(user.id, productId, quantity);
-      setCart(data.cart.products);
+      const updatedCart = await addToCart(user._id, productId, quantity);
+      setCart(updatedCart.cart.products);
     } catch (error) {
-      console.error('Error al agregar producto al carrito:', error);
+      console.error("❌ Error al agregar al carrito:", error.message);
     }
   };
 
-  const removeFromCart = async (productId) => {
-    const user = JSON.parse(localStorage.getItem('user'));
-    if (!user) return;
+  const handleRemoveFromCart = async (productId) => {
+    if (!user?._id) return;
 
     try {
-      const data = await removeProductFromCart(user.id, productId);
-      setCart(data.cart.products);
+      const updatedCart = await removeFromCart(user._id, productId);
+      setCart(updatedCart.cart.products);
     } catch (error) {
-      console.error('Error al eliminar producto del carrito:', error);
+      console.error("❌ Error al eliminar del carrito:", error.message);
     }
   };
+
+  const clearCart = () => setCart([]);
 
   return (
-    <CartContext.Provider value={{ cart, addToCart, removeFromCart }}>
+    <CartContext.Provider value={{ cart, handleAddToCart, handleRemoveFromCart, clearCart }}>
       {children}
     </CartContext.Provider>
   );
 };
+
+export const useCart = () => useContext(CartContext);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

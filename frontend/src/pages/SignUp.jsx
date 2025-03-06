@@ -1,55 +1,47 @@
-import { useState, useContext } from 'react';
-import { AuthContext } from '../context/AuthContext';
-import { useNavigate } from 'react-router-dom';
+import { useAuth } from "../context/AuthContext";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const SignUp = () => {
-  const { handleRegister } = useContext(AuthContext);
+  const { handleRegister } = useAuth();
+  const [error, setError] = useState("");
   const navigate = useNavigate();
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const name = e.target.name.value.trim();
+    const email = e.target.email.value.trim();
+    const password = e.target.password.value.trim();
+
+    if (!name || !email || !password) {
+      setError("Todos los campos son obligatorios.");
+      return;
+    }
+
     try {
       await handleRegister(name, email, password);
-      navigate('/');
-    } catch (err) {
-      setError('Error al registrar usuario. Inténtalo nuevamente.');
+      navigate("/");
+    } catch (error) {
+      setError("Error al registrarse. Intenta nuevamente.");
     }
   };
 
   return (
-    <div className="signup">
-      <h2>Registrarse</h2>
+    <div>
+      <h2>Registro</h2>
+      {error && <p style={{ color: "red" }}>{error}</p>}
       <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          placeholder="Nombre"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          required
-        />
-        <input
-          type="email"
-          placeholder="Correo electrónico"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-        <input
-          type="password"
-          placeholder="Contraseña"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
+        <input type="text" name="name" placeholder="Nombre" required />
+        <input type="email" name="email" placeholder="Correo" required />
+        <input type="password" name="password" placeholder="Contraseña" required />
         <button type="submit">Registrarse</button>
       </form>
-      {error && <p className="error">{error}</p>}
     </div>
   );
 };
 
 export default SignUp;
+
+
+
+

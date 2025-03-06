@@ -1,31 +1,34 @@
-import { useState, useContext } from 'react';
-import { AuthContext } from '../context/AuthContext';
-import { useNavigate } from 'react-router-dom';
+import { useState } from "react";
+import { useAuth } from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
-  const { handleLogin } = useContext(AuthContext);
+  const { handleLogin } = useAuth();
   const navigate = useNavigate();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError("");
+
     try {
       await handleLogin(email, password);
-      navigate('/');
+      navigate("/");
     } catch (err) {
-      setError('Error al iniciar sesión. Verifica tus credenciales.');
+      setError("Credenciales incorrectas o error en el servidor.");
     }
   };
 
   return (
-    <div className="login">
+    <div>
       <h2>Iniciar Sesión</h2>
+      {error && <p style={{ color: "red" }}>{error}</p>}
       <form onSubmit={handleSubmit}>
         <input
           type="email"
-          placeholder="Correo electrónico"
+          placeholder="Correo"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
@@ -39,9 +42,11 @@ const Login = () => {
         />
         <button type="submit">Ingresar</button>
       </form>
-      {error && <p className="error">{error}</p>}
     </div>
   );
 };
 
 export default Login;
+
+
+
