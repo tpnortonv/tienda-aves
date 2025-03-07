@@ -1,13 +1,18 @@
 import api from "./apiF";
 
 export const createPaymentIntent = async (amount, email, name, paymentMethodId) => {
-  const response = await api.post("/payments/create-payment-intent", {
-    amount,
-    email,
-    name,
-    paymentMethodId,
-  });
-  return response.data;
+  try {
+    const response = await api.post("/payments/create-payment-intent", {
+      amount,
+      email,
+      name,
+      paymentMethodId, // Asegúrate de enviar el paymentMethodId aquí
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error al crear PaymentIntent:", error);
+    throw error;
+  }
 };
 
 export const savePaymentDetails = async (userId, paymentIntentId, amount) => {
