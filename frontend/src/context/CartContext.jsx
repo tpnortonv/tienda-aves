@@ -1,64 +1,104 @@
-import { createContext, useContext, useState, useEffect } from "react";
-import { getCart, addToCart, removeFromCart } from "../services/cartServiceF";
-import { useAuth } from "./AuthContext";
+import React, { createContext, useState, useEffect, useContext } from "react";
+import { getCart, createOrUpdateCart, removeProductFromCart } from "../services/cartServiceF";
+import { AuthContext } from "./AuthContext";
 
-const CartContext = createContext();
+export const CartContext = createContext();
 
 export const CartProvider = ({ children }) => {
-  const { user } = useAuth();
   const [cart, setCart] = useState([]);
+  const { user } = useContext(AuthContext);
 
   useEffect(() => {
-    const fetchCart = async () => {
-      if (!user?._id) {
-        setCart([]);
-        return;
-      }
+    if (user === undefined) {
+      console.warn("⏳ Esperando a que `AuthContext` cargue el usuario...");
+      return;
+    }
 
+    if (!user || !user.id || !user.token) {
+      console.warn("⚠️ No se encontró un usuario autenticado en `CartContext`. Inicializando carrito vacío.");
+      setCart([]);
+      return;
+    }
+
+    const fetchCart = async () => {
       try {
-        const userCart = await getCart(user._id);
-        setCart(userCart.cart.products || []);
+        console.log(`📥 Obteniendo carrito para el usuario: ${user.id}`);
+        const cartData = await getCart(user.id, user.token);
+        // Verificar qué contiene la respuesta de cartData
+        console.log("🚀 Datos del carrito obtenidos:", cartData);
+        setCart(cartData.products || []);
       } catch (error) {
-        console.error("❌ Error al obtener el carrito:", error.message);
-        setCart([]);
+        console.error("❌ Error al obtener el carrito:", error);
+        setCart([]); // Asegurarse de vaciar el carrito en caso de error
       }
     };
 
     fetchCart();
   }, [user]);
 
-  const handleAddToCart = async (productId, quantity = 1) => {
-    if (!user?._id) return console.error("❌ Usuario no autenticado.");
+  const addToCart = async (productId, quantity) => {
+    if (!user || !user.id || !user.token) {
+      alert("⚠️ Debes iniciar sesión para agregar productos al carrito.");
+      return;
+    }
 
     try {
-      const updatedCart = await addToCart(user._id, productId, quantity);
-      setCart(updatedCart.cart.products);
+      console.log(`🛒 Agregando producto ${productId} al carrito del usuario ${user.id}`);
+      const updatedCart = await createOrUpdateCart(user.id, productId, quantity, user.token);
+      // Verifica que updatedCart tenga los productos
+      console.log("🚀 Carrito actualizado:", updatedCart);
+      setCart(updatedCart.products || []); // Asegúrate de que `updatedCart` tenga la propiedad `products`
     } catch (error) {
-      console.error("❌ Error al agregar al carrito:", error.message);
+      console.error("❌ Error al agregar producto al carrito:", error);
     }
   };
 
-  const handleRemoveFromCart = async (productId) => {
-    if (!user?._id) return;
-
+  const removeFromCart = async (userId, productId) => {
     try {
-      const updatedCart = await removeFromCart(user._id, productId);
-      setCart(updatedCart.cart.products);
+      console.log(`🛒 Eliminando producto ${productId} del carrito del usuario ${userId}`);
+      const updatedCart = await removeProductFromCart(userId, productId, user.token);
+      console.log("🚀 Carrito actualizado tras eliminar producto:", updatedCart);
+      setCart(updatedCart.products || []);
     } catch (error) {
-      console.error("❌ Error al eliminar del carrito:", error.message);
+      console.error("❌ Error al eliminar producto del carrito:", error);
     }
   };
-
-  const clearCart = () => setCart([]);
 
   return (
-    <CartContext.Provider value={{ cart, handleAddToCart, handleRemoveFromCart, clearCart }}>
+    <CartContext.Provider value={{ cart, addToCart, removeFromCart }}>
       {children}
     </CartContext.Provider>
   );
 };
 
-export const useCart = () => useContext(CartContext);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

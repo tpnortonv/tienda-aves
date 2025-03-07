@@ -1,61 +1,205 @@
-/* Reset básico para evitar inconsistencias entre navegadores */
+/* RESET de márgenes, padding y box-sizing */
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Arial', sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  font-family: 'Roboto', sans-serif;
+  background-color: #f4f4f4;
+}
+
+/* Contenedor principal para la estructura de la página */
+#root {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+/* Espaciado de contenido principal */
+main.container {
+  flex: 1;
+  padding: 20px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* Estilo para el header */
+header {
+  background-color: #004d33; /* Verde oscuro */
+  color: #ffffff;
+  padding: 20px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  position: relative;
+}
+
+header .logo {
+  width: 50px;
+  height: 50px;
+  object-fit: contain;
+}
+
+header h1 {
+  font-size: 2rem;
+  font-weight: 500;
+  margin-right: 20px;
+  color: white;
+}
+
+header nav {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 100%;
+}
+
+header nav button {
+  background-color: transparent;
+  border: 2px solid #006644;
+  color: white;
+  padding: 10px 20px;
+  font-size: 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s, border-color 0.3s;
+  margin: 0 10px;
+  flex-grow: 1;
+  text-align: center;
+}
+
+header nav button:hover {
+  background-color: #006644;
+  border-color: #004d33;
+}
+
+/* Estilo para el footer */
+footer {
+  background-color: #004d33;
+  color: white;
+  text-align: center;
+  padding: 20px;
+  position: relative;
+  bottom: 0;
+  width: 100%;
+}
+
+/* Estilo para los botones */
+button {
+  border: 2px solid #006644;
+  background-color: transparent;
+  color: #006644;
+  padding: 10px 20px;
+  font-size: 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+button:hover {
+  background-color: #006644;
+  color: #ffffff;
+  border-color: #004d33;
+}
+
+/* Estilo para los formularios */
+input, select, textarea {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border: 2px solid #b4b4b4;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+input:focus, select:focus, textarea:focus {
+  border-color: #006644;
+  outline: none;
+}
+
+/* Estilo para las tarjetas de producto */
+.product-card {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 20px;
+  background-color: white;
+  transition: all 0.3s;
+}
+
+.product-card:hover {
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Efecto hover para imágenes en tarjetas de productos */
+.product-card img {
+  width: 100%;
+  border-radius: 4px;
+  object-fit: cover;
+}
+
+/* Estilo para el título de los productos */
+.product-card h2 {
+  font-size: 1.5rem;
+  color: #004d33;
+  margin-top: 15px;
+}
+
+/* Estilo para las descripciones de los productos */
+.product-card p {
+  font-size: 1rem;
+  color: #777;
+}
+
+/* Espaciado y alineación en las páginas */
+.page-title {
+  font-size: 2.5rem;
+  color: #004d33;
+  text-align: center;
+  margin: 30px 0;
+}
+
+/* Página de inicio */
+.home-page {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 30px;
+  justify-items: center;
+}
+
+.home-page .product-card {
+  width: 90%;
+  max-width: 300px;
+}
+
+/* Ajustes para páginas como carrito, checkout, login, etc. */
+.page-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.page-container h2 {
+  font-size: 2rem;
+  color: #004d33;
+  margin-bottom: 30px;
+}
+
+@media (max-width: 768px) {
+  .home-page {
+    grid-template-columns: 1fr 1fr;
   }
-  
-  /* Estilos globales */
-  body {
-    background-color: #f8f9fa;
-    color: #333;
-    line-height: 1.6;
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
+}
+
+@media (max-width: 480px) {
+  .home-page {
+    grid-template-columns: 1fr;
   }
-  
-  /* Contenedor principal */
-  #root {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    min-height: 100vh;
-  }
-  
-  /* Estilos generales para botones */
-  button {
-    background-color: #007bff;
-    color: white;
-    border: none;
-    padding: 10px 15px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 1rem;
-    transition: background 0.3s ease-in-out;
-  }
-  
-  button:hover {
-    background-color: #0056b3;
-  }
-  
-  /* Estilos generales para enlaces */
-  a {
-    text-decoration: none;
-    color: #007bff;
-    transition: color 0.3s ease-in-out;
-  }
-  
-  a:hover {
-    color: #0056b3;
-  }
-  
-  /* Contenedor de las páginas */
-  .container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
-  }
-  
+}

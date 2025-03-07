@@ -1,56 +1,74 @@
-import axios from "axios";
+import api from "./apiF";
 
-const API_URL = "http://localhost:5000/api/cart";
-
-export const getCart = async (userId) => {
+// Obtener el carrito del usuario
+export const getCart = async (userId, token) => {
   try {
-    const token = localStorage.getItem("token");
-    if (!token) throw new Error("No hay token disponible");
-
-    const response = await axios.get(`${API_URL}/${userId}`, {
-      headers: { "x-auth-token": token }, // 🔥 Cambiado aquí
+    const response = await api.get(`/cart/${userId}`, {
+      headers: {
+        "x-auth-token": token, // 🔹 Debe coincidir con el backend
+      },
     });
-
     return response.data;
   } catch (error) {
-    console.error("❌ Error al obtener el carrito:", error.response?.data || error.message);
+    console.error("❌ Error en `getCart`:", error.response?.data || error.message);
     throw error;
   }
 };
 
-export const addToCart = async (userId, productId, quantity = 1) => {
+// Agregar o actualizar un producto en el carrito
+export const createOrUpdateCart = async (userId, productId, quantity, token) => {
   try {
-    const token = localStorage.getItem("token");
-    if (!token) throw new Error("No hay token disponible");
-
-    const response = await axios.post(
-      `${API_URL}`,
+    const response = await api.post(
+      "/cart",
       { userId, productId, quantity },
-      { headers: { "x-auth-token": token } } // 🔥 Cambiado aquí
+      {
+        headers: {
+          "x-auth-token": token, // 🔹 Enviando correctamente el token
+        },
+      }
     );
-
     return response.data;
   } catch (error) {
-    console.error("❌ Error al agregar producto al carrito:", error.response?.data || error.message);
+    console.error("❌ Error en `createOrUpdateCart`:", error.response?.data || error.message);
     throw error;
   }
 };
 
-export const removeFromCart = async (userId, productId) => {
+// Eliminar un producto del carrito
+export const removeProductFromCart = async (userId, productId, token) => {
   try {
-    const token = localStorage.getItem("token");
-    if (!token) throw new Error("No hay token disponible");
-
-    const response = await axios.delete(`${API_URL}/${userId}/${productId}`, {
-      headers: { "x-auth-token": token }, // 🔥 Cambiado aquí
+    const response = await api.delete(`/cart/${userId}/${productId}`, {
+      headers: {
+        "x-auth-token": token, // 🔹 Header en minúsculas
+      },
     });
-
     return response.data;
   } catch (error) {
-    console.error("❌ Error al eliminar producto del carrito:", error.response?.data || error.message);
+    console.error("❌ Error en `removeProductFromCart`:", error.response?.data || error.message);
     throw error;
   }
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

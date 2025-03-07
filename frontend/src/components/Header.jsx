@@ -1,31 +1,38 @@
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
-import { useAuth } from "../context/AuthContext";
+import { AuthContext } from "../context/AuthContext";
 
 const Header = () => {
-  const { user, handleLogout } = useAuth();
+  const { user, handleLogout } = useContext(AuthContext);
 
   return (
-    <header>
+    <header className="header">
       <nav>
-        <Link to="/">Home</Link>
-        <Link to="/cart">Carrito</Link>
-        {user ? (
-          <>
-            <span>Bienvenido, {user.name}</span>
-            <button onClick={handleLogout}>Cerrar sesión</button>
-          </>
-        ) : (
-          <>
-            <Link to="/login">Iniciar Sesión</Link>
-            <Link to="/signup">Registrarse</Link>
-          </>
-        )}
+        <Link to="/" className="logo">Tienda Aves</Link>
+        <ul>
+          <li><Link to="/">Inicio</Link></li>
+          <li><Link to="/cart">Carrito</Link></li>
+          {user ? (
+            <>
+              <li><span>Hola, {user.email}</span></li>
+              <li><button onClick={handleLogout}>Cerrar sesión</button></li>
+            </>
+          ) : (
+            <>
+              <li><Link to="/login">Iniciar sesión</Link></li>
+              <li><Link to="/signup">Registrarse</Link></li>
+            </>
+          )}
+        </ul>
       </nav>
     </header>
   );
 };
 
 export default Header;
+
+
+
 
 
 

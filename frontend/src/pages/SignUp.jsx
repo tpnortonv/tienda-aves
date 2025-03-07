@@ -1,39 +1,32 @@
-import { useAuth } from "../context/AuthContext";
-import { useState } from "react";
+import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../context/AuthContext";
 
 const SignUp = () => {
-  const { handleRegister } = useAuth();
-  const [error, setError] = useState("");
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const { handleRegister } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const name = e.target.name.value.trim();
-    const email = e.target.email.value.trim();
-    const password = e.target.password.value.trim();
-
-    if (!name || !email || !password) {
-      setError("Todos los campos son obligatorios.");
-      return;
-    }
-
     try {
-      await handleRegister(name, email, password);
+      await handleRegister({ name, email, password });
       navigate("/");
     } catch (error) {
-      setError("Error al registrarse. Intenta nuevamente.");
+      console.error("❌ Error al registrarse:", error);
+      alert("Error al registrarse, intenta nuevamente.");
     }
   };
 
   return (
-    <div>
-      <h2>Registro</h2>
-      {error && <p style={{ color: "red" }}>{error}</p>}
+    <div className="signup">
+      <h2>Registrarse</h2>
       <form onSubmit={handleSubmit}>
-        <input type="text" name="name" placeholder="Nombre" required />
-        <input type="email" name="email" placeholder="Correo" required />
-        <input type="password" name="password" placeholder="Contraseña" required />
+        <input type="text" placeholder="Nombre" value={name} onChange={(e) => setName(e.target.value)} required />
+        <input type="email" placeholder="Correo" value={email} onChange={(e) => setEmail(e.target.value)} required />
+        <input type="password" placeholder="Contraseña" value={password} onChange={(e) => setPassword(e.target.value)} required />
         <button type="submit">Registrarse</button>
       </form>
     </div>
@@ -41,6 +34,9 @@ const SignUp = () => {
 };
 
 export default SignUp;
+
+
+
 
 
 

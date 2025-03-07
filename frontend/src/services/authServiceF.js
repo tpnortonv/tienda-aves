@@ -1,60 +1,65 @@
-import axios from "axios";
+import api from "./apiF";
 
-const API_URL = "http://localhost:5000/api/auth";
-
-// Registro de usuario
-export const register = async (name, email, password) => {
+export const register = async (userData) => {
   try {
-    const response = await axios.post(`${API_URL}/register`, {
-      name,
-      email,
-      password,
-    });
-    localStorage.setItem("token", response.data.token);
+    const response = await api.post("/auth/register", userData);
+    console.log("✅ Usuario registrado:", response.data);
     return response.data;
   } catch (error) {
-    console.error("❌ Error al registrar usuario:", error.response?.data || error.message);
-    return null;
+    console.error("❌ Error al registrar usuario:", error.response?.data || error);
+    throw error;
   }
 };
 
-// Inicio de sesión
-export const login = async (email, password) => {
+export const login = async (userData) => {
   try {
-    const response = await axios.post(`${API_URL}/login`, {
-      email,
-      password,
-    });
-    localStorage.setItem("token", response.data.token);
+    const response = await api.post("/auth/login", userData);
+    console.log("✅ Usuario autenticado:", response.data);
+
+    if (!response.data.token) {
+      console.error("❌ Error: No se recibió un token en la respuesta del login");
+      return null;
+    }
+
     return response.data;
   } catch (error) {
-    console.error("❌ Error al iniciar sesión:", error.response?.data || error.message);
-    return null;
+    console.error("❌ Error al iniciar sesión:", error.response?.data || error);
+    throw error;
   }
 };
 
-// Cierre de sesión
+// 🔥 Corregido: Se agrega la función `logout`
 export const logout = () => {
-  localStorage.removeItem("token");
+  console.log("🗑️ Eliminando datos de sesión...");
+  localStorage.removeItem("authToken");
+  localStorage.removeItem("userId");
+  localStorage.removeItem("userEmail");
 };
 
-// Obtener usuario autenticado desde token JWT
-export const getCurrentUser = () => {
-  const token = localStorage.getItem("token");
-  if (!token) return null;
-  try {
-    const payload = JSON.parse(atob(token.split(".")[1]));
-    return { _id: payload.userId, email: payload.email, name: payload.name };
-  } catch (error) {
-    console.error("❌ Error al decodificar token:", error);
-    return null;
-  }
-};
 
-// Obtener token almacenado
-export const getToken = () => {
-  return localStorage.getItem("token");
-};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
