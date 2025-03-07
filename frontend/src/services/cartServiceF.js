@@ -1,19 +1,25 @@
 import api from "./apiF";
 
-// Obtener el carrito del usuario
 export const getCart = async (userId, token) => {
   try {
     const response = await api.get(`/cart/${userId}`, {
-      headers: {
-        "x-auth-token": token, // 🔹 Debe coincidir con el backend
-      },
+      headers: { "x-auth-token": token }
     });
-    return response.data;
+
+    console.log("🚀 Datos recibidos en `getCart()`:", response.data); // 🔥 Verifica la respuesta
+
+    if (response.data && response.data.cart && Array.isArray(response.data.cart.products)) {
+      return response.data.cart; // 🔥 Solo devolvemos el `cart` con `products`
+    } else {
+      console.warn("⚠️ `getCart()` no devolvió un carrito válido.");
+      return { products: [] }; // Evita `undefined`
+    }
   } catch (error) {
-    console.error("❌ Error en `getCart`:", error.response?.data || error.message);
-    throw error;
+    console.error("❌ Error en `getCart()`:", error);
+    return { products: [] }; // Asegurar que al menos devuelva un array vacío
   }
 };
+
 
 // Agregar o actualizar un producto en el carrito
 export const createOrUpdateCart = async (userId, productId, quantity, token) => {

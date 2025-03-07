@@ -22,7 +22,7 @@ const Cart = () => {
       <h2>Carrito de Compras</h2>
       <ul>
         {cart.map((item) => (
-          <li key={item.productId._id}>
+          <li key={`${item.productId._id}-${item.quantity}`}>
             <img
               src={item.productId.imageUrl}
               alt={item.productId.name}
@@ -33,10 +33,18 @@ const Cart = () => {
               <p>${item.productId.price}</p>
               <p>Cantidad: {item.quantity}</p>
               <button
-                onClick={() => removeFromCart(user.id, item.productId._id)}
+                onClick={() => {
+                  if (item.productId && item.productId._id) { // 🔥 Verificamos antes de eliminar
+                    console.log(`🗑️ Eliminando producto: ${item.productId._id}`);
+                    removeFromCart(item.productId._id);
+                  } else {
+                    console.error("❌ Error: `productId` es undefined, no se puede eliminar.");
+                  }
+                }}
               >
                 Eliminar
               </button>
+
             </div>
           </li>
         ))}
