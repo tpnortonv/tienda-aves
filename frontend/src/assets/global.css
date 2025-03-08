@@ -5,11 +5,18 @@
   box-sizing: border-box;
 }
 
-html, body {
+html,
+body {
   height: 100%;
-  font-family: 'Playfair Display', serif; /* Tipografía elegante y cursiva */
+  font-family: 'Playfair Display', serif;
+  /* Tipografía elegante y cursiva */
   background-color: #f4f1ea;
   color: #2c2c2c;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  overflow-x: hidden;
+  /* Evita desbordamiento horizontal */
 }
 
 /* Contenedor principal */
@@ -22,27 +29,29 @@ html, body {
 /* Espaciado de contenido principal */
 main.container {
   flex: 1;
-  padding: 20px;
   margin: 0 auto;
   width: 100%;
 }
 
 /* ======= HEADER ======= */
 header {
-  background-color: #2e482c; /* Verde bosque oscuro */
+  background-color: #2e482c;
+  /* Verde bosque oscuro */
   color: #ffffff;
   padding: 15px 30px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  font-family: 'Playfair Display', cursive; /* 🔥 Letra más cursiva */
+  font-family: 'Playfair Display', cursive;
+  /* 🔥 Letra más cursiva */
 }
 
 /* Asegurar que el botón del logo no tenga bordes en ningún estado */
 .logo-btn {
   background: none;
-  border: none; /* 🔥 Sin bordes */
+  border: none;
+  /* 🔥 Sin bordes */
   outline: none;
   padding: 0;
   margin: 0;
@@ -61,7 +70,8 @@ header {
 
 /* Asegurar que la imagen del logo no cambie */
 .logo {
-  width: 100px; /* Ajusta el tamaño según necesites */
+  width: 100px;
+  /* Ajusta el tamaño según necesites */
   height: auto;
   display: block;
 }
@@ -83,11 +93,13 @@ header nav {
 
 /* ======= BOTONES Y ENLACES ======= */
 header nav a,
-header .right-menu button {
+header .right-menu button,
+header .user-name {
   text-decoration: none;
   color: white;
-  font-size: 1rem;
-  border: none; /* 🔥 Se eliminan bordes */
+  font-size: 1.3rem;
+  border: none;
+  /* 🔥 Se eliminan bordes */
   border-radius: 6px;
   transition: all 0.3s;
   cursor: pointer;
@@ -110,7 +122,8 @@ header nav a:hover {
 
 /* Estilos para el ícono del carrito */
 .cart-icon {
-  width: 30px;  /* Ajusta el tamaño del ícono según necesites */
+  width: 30px;
+  /* Ajusta el tamaño del ícono según necesites */
   height: auto;
   display: block;
 }
@@ -125,13 +138,34 @@ header nav a:hover {
   box-shadow: none;
 }
 
-/* ======= FOOTER ======= */
-footer {
+.footer {
   background-color: #2e482c;
+  /* Verde bosque oscuro */
   color: white;
   text-align: center;
   padding: 20px;
   width: 100%;
+  font-family: 'Playfair Display', cursive;
+}
+
+.footer-info {
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.footer-info p {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 1rem;
+}
+
+.icon {
+  width: 20px;
+  /* Ajusta el tamaño del icono */
+  height: auto;
 }
 
 /* ======= BOTONES GENERALES ======= */
@@ -153,7 +187,9 @@ button:hover {
 }
 
 /* ======= FORMULARIOS ======= */
-input, select, textarea {
+input,
+select,
+textarea {
   width: 100%;
   padding: 10px;
   margin: 10px 0;
@@ -163,42 +199,85 @@ input, select, textarea {
   background-color: #faf8f5;
 }
 
-input:focus, select:focus, textarea:focus {
+input:focus,
+select:focus,
+textarea:focus {
   border-color: #4a6834;
   outline: none;
 }
-
 /* ======= TARJETAS DE PRODUCTO ======= */
+.product-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* 🔥 Se ajusta a 3 por fila */
+  gap: 20px; /* Espacio entre tarjetas */
+  justify-content: center;
+  width: 100%;
+  max-width: 1200px; /* 🔥 Máximo ancho para evitar que se estiren demasiado */
+  margin: 0 auto;
+}
+
+/* Estilos de cada tarjeta */
 .product-card {
-  border: 1px solid #ddd;
+  width: 100%; /* 🔥 Para que se adapten al grid */
+  max-width: 400px; /* 🔥 Ajusta el tamaño máximo */
+  height: 400px;
   border-radius: 8px;
   padding: 16px;
-  margin-bottom: 20px;
-  background-color: white;
+  background-color: #2e482c;
   transition: all 0.3s;
   text-align: center;
+  font-family: 'Playfair Display', cursive;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* 🔥 Acomoda mejor el contenido */
+  align-items: center;
 }
 
+/* Hover */
 .product-card:hover {
-  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.1);
+  box-shadow: 0px 6px 12px rgba(255, 255, 255, 0.6);
+  border: 3px solid white;
 }
 
+/* Imagen del producto */
 .product-card img {
-  width: 85%;
+  width: 70%;
   border-radius: 6px;
   object-fit: cover;
 }
 
-/* Títulos y descripciones */
+/* Títulos */
 .product-card h2 {
-  font-size: 1.4rem;
-  color: #2e482c;
+  font-size: 1.3rem;
+  color: white;
   margin-top: 12px;
 }
 
+/* Descripciones con fuente diferente */
 .product-card p {
   font-size: 1rem;
-  color: #5c5c5c;
+  color: white;
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
+/* ======= BOTÓN "Ver Más" ======= */
+.product-card .view-more-btn {
+  font-size: 1rem;
+  padding: 10px 20px;
+  border: 2px solid white;
+  background: transparent;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s;
+  font-family: 'Playfair Display', cursive;
+  margin: auto; /* 🔥 Centra automáticamente el botón */
+  display: block;
+}
+
+.product-card .view-more-btn:hover {
+  background-color: white;
+  color: #2e482c;
 }
 
 /* ======= PÁGINAS ======= */
@@ -209,11 +288,159 @@ input:focus, select:focus, textarea:focus {
   margin: 30px 0;
 }
 
-.home-page {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 20px;
-  justify-items: center;
+/* ======= SECCIÓN DE BIENVENIDA ======= */
+.welcome-section {
+  width: 100%;
+  text-align: center;
+  color: white;
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.6);
+}
+
+.welcome-section h1 {
+  font-size: 5rem;
+  color: white;
+  font-family: 'Playfair Display', cursive;
+  margin-bottom: 15px;
+}
+
+.welcome-section p {
+  font-size: 1.5rem;
+  color: white;
+  margin-bottom: 20px;
+  line-height: 1.6;
+  font-family: Arial, sans-serif;
+}
+
+/* ======= MODAL "QUIÉNES SOMOS" ======= */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: #2e482c;
+  padding: 30px;
+  width: 80%;
+  /* 🔥 Aumentamos el ancho */
+  max-width: 550px;
+  /* 🔥 Ancho máximo más grande */
+  min-height: 300px;
+  /* 🔥 Para evitar que sea muy corto */
+  border-radius: 8px;
+  text-align: center;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.modal-content h2 {
+  font-size: 2rem;
+  color: white;
+  margin-bottom: 15px;
+  font-family: 'Playfair Display', cursive;
+}
+
+.modal-content p {
+  font-size: 1rem;
+  color: white;
+  margin-bottom: 20px;
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif
+}
+
+/* Imagen en el modal */
+.modal-image {
+  display: block;
+  /* 🔥 Hace que la imagen no sea inline y permita centrado */
+  margin: 0 auto;
+  /* 🔥 Centra la imagen horizontalmente */
+  width: 100%;
+  max-width: 400px;
+  height: auto;
+  border-radius: 8px;
+  margin-bottom: 15px;
+}
+
+/* Botón para cerrar el modal */
+.close-modal {
+  font-size: 1.3rem;
+  padding: 10px 20px;
+  background: transparent;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s;
+  font-family: 'Playfair Display', cursive;
+  max-width: 150px;
+  margin: 0 auto;
+}
+
+.close-modal:hover {
+  background: #1a3218;
+  border: 2px solid white;
+  /* 🔥 Borde blanco de 2px */
+}
+
+/* ======= BOTÓN "QUIÉNES SOMOS" ======= */
+.about-button {
+  font-size: 1.2rem;
+  padding: 12px 20px;
+  background-color: #2e482c;
+  color: white;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s;
+  font-family: 'Playfair Display', cursive;
+  margin: 10px;
+}
+
+.about-button:hover {
+  background-color: #2e482c;
+  color: white;
+  border: 3px solid white;
+}
+
+/* 🔥 Botón "Ver Productos" con Playfair Display */
+.explore-button {
+  font-size: 1.2rem;
+  padding: 12px 20px;
+  background-color: #2e482c;
+  color: white;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s;
+  font-family: 'Playfair Display', cursive;
+  margin: 10px;
+}
+
+.explore-button:hover {
+  background-color: #2e482c;
+  color: white;
+  border: 3px solid white;
+}
+
+.home {
+  background-image: url('/src/assets/images/fondo-home.png');
+  /* Imagen de fondo */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  min-height: 100vh;
+  /* Asegura que cubra toda la pantalla */
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 .home-page .product-card {
