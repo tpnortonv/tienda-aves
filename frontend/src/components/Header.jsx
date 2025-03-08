@@ -1,34 +1,44 @@
 import React, { useContext } from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
-import logo from "/src/assets/images/pajaro1.png"; // ✅ Importamos el logo como un recurso
+import logo from "/src/assets/images/pajaro1.png";
 
 const Header = () => {
   const { user, handleLogout } = useContext(AuthContext);
+  const navigate = useNavigate();
+
+  const handleHomeClick = () => {
+    navigate("/", { state: { showWelcome: true } }); // 🔥 Fuerza la vista de "Bienvenidos"
+  };
+
+  const handleServicesClick = () => {
+    navigate("/", { state: { showWelcome: false, showProducts: true } }); // 🔥 Va directo a los productos
+  };
 
   return (
     <header className="header">
       <nav>
         <div className="left-menu">
-          <Link to="/">
-            <img src={logo} alt="Logo Tienda Aves" className="logo" /> {/* ✅ Usamos <img> en lugar de CSS */}
-          </Link>
-          <Link to="/" className="brand">Avista-aves</Link>
+          <button onClick={handleHomeClick} className="logo-btn">
+            <img src={logo} alt="Logo Tienda Aves" className="logo" />
+          </button>
         </div>
         <div className="right-menu">
-          <Link to="/">Inicio</Link>
-          <Link to="/cart">Carrito</Link>
-          {user ? (
+          {!user ? (
             <>
-              <span className="user-name">Hola, {user.name}</span>
-              <button onClick={handleLogout} className="logout-btn">Cerrar sesión</button>
+              <button className="login-btn" onClick={() => navigate("/login")}>Iniciar sesión</button>
+              <button className="signup-btn" onClick={() => navigate("/signup")}>Registrarse</button>
             </>
           ) : (
             <>
-              <Link to="/login">Iniciar sesión</Link>
-              <Link to="/signup">Registrarse</Link>
+              <span className="user-name">¡Hola {user.name}!</span>
+              <button onClick={handleLogout} className="logout-btn">Cerrar sesión</button>
             </>
           )}
+          <button onClick={handleServicesClick} className="home-btn">Servicios</button>
+          <button className="cart-btn" onClick={() => navigate("/cart")}>
+            <img src="/src/assets/images/cart.png" alt="Carrito" className="cart-icon" />
+          </button>
         </div>
       </nav>
     </header>
@@ -36,6 +46,14 @@ const Header = () => {
 };
 
 export default Header;
+
+
+
+
+
+
+
+
 
 
 

@@ -23,7 +23,7 @@ const ProductPage = () => {
     fetchProduct();
   }, [id]);
 
-  if (!product) return <p>Cargando producto...</p>;
+  if (!product) return <p>Cargando servicios...</p>;
   if (user === undefined) return <p>Cargando usuario...</p>;
 
   const handleAddToCart = () => {

@@ -31,7 +31,7 @@ const Cart = () => {
             <div>
               <h3>{item.productId.name}</h3>
               <p>${item.productId.price}</p>
-              <p>Cantidad: {item.quantity}</p>
+              <p>Cantidad de personas: {item.quantity}</p>
               <button
                 onClick={() => {
                   if (item.productId && item.productId._id) { // 🔥 Verificamos antes de eliminar
