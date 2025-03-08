@@ -8,8 +8,6 @@ import { loadStripe } from "@stripe/stripe-js";  // Importar loadStripe de Strip
 // Importación de los componentes
 import Header from "./components/Header";  // Componente Header
 import Footer from "./components/Footer";  // Componente Footer
-import CheckoutForm from "./components/CheckoutForm";  // Formulario de Checkout
-import ProductCard from "./components/ProductCard";  // Componente ProductCard
 
 // Importación de las páginas
 import Home from "./pages/Home";  // Página Home

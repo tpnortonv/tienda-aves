@@ -7,8 +7,9 @@
 
 html, body {
   height: 100%;
-  font-family: 'Roboto', sans-serif;
-  background-color: #f4f4f4;
+  font-family: 'Playfair Display', serif; /* Tipografía elegante y cursiva */
+  background-color: #f4f1ea;
+  color: #2c2c2c;
 }
 
 /* Contenedor principal para la estructura de la página */
@@ -28,7 +29,7 @@ main.container {
 
 /* Estilo para el header */
 header {
-  background-color: #004d33; /* Verde oscuro */
+  background-color: #2e482c; /* Verde bosque oscuro */
   color: #ffffff;
   padding: 20px 40px;
   display: flex;
@@ -41,69 +42,76 @@ header {
 header .logo {
   width: 50px;
   height: 50px;
-  object-fit: contain;
+  background-image: url("/src/assets/images/pajaro1.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  display: block;
 }
 
-header h1 {
-  font-size: 2rem;
-  font-weight: 500;
-  margin-right: 20px;
-  color: white;
+header .left-menu {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+
+header .right-menu {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  margin-left: auto;
+}
+
+header .logout {
+  margin-left: 60px;
 }
 
 header nav {
   display: flex;
-  justify-content: space-around;
   align-items: center;
-  width: 100%;
-}
-
-header nav button {
-  background-color: transparent;
-  border: 2px solid #006644;
-  color: white;
-  padding: 10px 20px;
-  font-size: 1rem;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background-color 0.3s, border-color 0.3s;
-  margin: 0 10px;
+  justify-content: space-between;
   flex-grow: 1;
-  text-align: center;
 }
 
-header nav button:hover {
-  background-color: #006644;
-  border-color: #004d33;
+header nav a {
+  text-decoration: none;
+  color: white;
+  font-size: 1.3rem;
+  font-style: italic;
+  padding: 10px 15px;
+  border-radius: 6px;
+  transition: background-color 0.3s;
+}
+
+header nav a:hover {
+  background-color: rgba(255, 255, 255, 0.2);
 }
 
 /* Estilo para el footer */
 footer {
-  background-color: #004d33;
+  background-color: #2e482c;
   color: white;
   text-align: center;
   padding: 20px;
-  position: relative;
-  bottom: 0;
   width: 100%;
 }
 
 /* Estilo para los botones */
 button {
-  border: 2px solid #006644;
+  border: 2px solid #4a6834;
   background-color: transparent;
-  color: #006644;
-  padding: 10px 20px;
+  color: #4a6834;
+  padding: 12px 24px;
   font-size: 1rem;
-  border-radius: 4px;
+  border-radius: 8px;
   cursor: pointer;
   transition: all 0.3s;
 }
 
 button:hover {
-  background-color: #006644;
+  background-color: #4a6834;
   color: #ffffff;
-  border-color: #004d33;
+  border-color: #2e482c;
 }
 
 /* Estilo para los formularios */
@@ -111,13 +119,14 @@ input, select, textarea {
   width: 100%;
   padding: 10px;
   margin: 10px 0;
-  border: 2px solid #b4b4b4;
-  border-radius: 4px;
+  border: 2px solid #8b6f47;
+  border-radius: 6px;
   font-size: 1rem;
+  background-color: #faf8f5;
 }
 
 input:focus, select:focus, textarea:focus {
-  border-color: #006644;
+  border-color: #4a6834;
   outline: none;
 }
 
@@ -125,40 +134,41 @@ input:focus, select:focus, textarea:focus {
 .product-card {
   border: 1px solid #ddd;
   border-radius: 8px;
-  padding: 20px;
+  padding: 16px;
   margin-bottom: 20px;
   background-color: white;
   transition: all 0.3s;
+  text-align: center;
 }
 
 .product-card:hover {
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.1);
 }
 
 /* Efecto hover para imágenes en tarjetas de productos */
 .product-card img {
-  width: 100%;
-  border-radius: 4px;
+  width: 85%; /* Imágenes más pequeñas para mayor armonía */
+  border-radius: 6px;
   object-fit: cover;
 }
 
 /* Estilo para el título de los productos */
 .product-card h2 {
-  font-size: 1.5rem;
-  color: #004d33;
-  margin-top: 15px;
+  font-size: 1.4rem;
+  color: #2e482c;
+  margin-top: 12px;
 }
 
 /* Estilo para las descripciones de los productos */
 .product-card p {
   font-size: 1rem;
-  color: #777;
+  color: #5c5c5c;
 }
 
 /* Espaciado y alineación en las páginas */
 .page-title {
   font-size: 2.5rem;
-  color: #004d33;
+  color: #2e482c;
   text-align: center;
   margin: 30px 0;
 }
@@ -166,14 +176,14 @@ input:focus, select:focus, textarea:focus {
 /* Página de inicio */
 .home-page {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 30px;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
   justify-items: center;
 }
 
 .home-page .product-card {
   width: 90%;
-  max-width: 300px;
+  max-width: 280px;
 }
 
 /* Ajustes para páginas como carrito, checkout, login, etc. */
@@ -188,7 +198,7 @@ input:focus, select:focus, textarea:focus {
 
 .page-container h2 {
   font-size: 2rem;
-  color: #004d33;
+  color: #2e482c;
   margin-bottom: 30px;
 }
 

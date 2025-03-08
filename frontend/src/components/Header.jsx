@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
+import logo from "/src/assets/images/pajaro1.png"; // ✅ Importamos el logo como un recurso
 
 const Header = () => {
   const { user, handleLogout } = useContext(AuthContext);
@@ -8,28 +9,35 @@ const Header = () => {
   return (
     <header className="header">
       <nav>
-        <Link to="/" className="logo">Tienda Aves</Link>
-        <ul>
-          <li><Link to="/">Inicio</Link></li>
-          <li><Link to="/cart">Carrito</Link></li>
+        <div className="left-menu">
+          <Link to="/">
+            <img src={logo} alt="Logo Tienda Aves" className="logo" /> {/* ✅ Usamos <img> en lugar de CSS */}
+          </Link>
+          <Link to="/" className="brand">Avista-aves</Link>
+        </div>
+        <div className="right-menu">
+          <Link to="/">Inicio</Link>
+          <Link to="/cart">Carrito</Link>
           {user ? (
             <>
-              <li><span>Hola, {user.email}</span></li>
-              <li><button onClick={handleLogout}>Cerrar sesión</button></li>
+              <span className="user-name">Hola, {user.name}</span>
+              <button onClick={handleLogout} className="logout-btn">Cerrar sesión</button>
             </>
           ) : (
             <>
-              <li><Link to="/login">Iniciar sesión</Link></li>
-              <li><Link to="/signup">Registrarse</Link></li>
+              <Link to="/login">Iniciar sesión</Link>
+              <Link to="/signup">Registrarse</Link>
             </>
           )}
-        </ul>
+        </div>
       </nav>
     </header>
   );
 };
 
 export default Header;
+
+
 
 
 

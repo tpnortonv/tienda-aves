@@ -10,11 +10,12 @@ export const AuthProvider = ({ children }) => {
     const token = localStorage.getItem("authToken") || null;
     const userId = localStorage.getItem("userId") || null;
     const userEmail = localStorage.getItem("userEmail") || null;
+    const userName = localStorage.getItem("userName") || null; // 🔥 Agregar el nombre
 
-    console.log("🔍 Verificando sesión en localStorage:", { token, userId, userEmail });
+    console.log("🔍 Verificando sesión en localStorage:", { token, userId, userEmail, userName });
 
-    if (token && userId && userEmail) {
-      setUser({ id: userId, email: userEmail, token });
+    if (token && userId && userEmail && userName) {
+      setUser({ id: userId, email: userEmail, name: userName, token });
     } else {
       setUser(null);
     }
@@ -28,7 +29,9 @@ export const AuthProvider = ({ children }) => {
         localStorage.setItem("authToken", data.token);
         localStorage.setItem("userId", data.user.id);
         localStorage.setItem("userEmail", data.user.email);
-        setUser({ id: data.user.id, email: data.user.email, token: data.token });
+        localStorage.setItem("userName", data.user.name); // 🔥 Guardar nombre
+
+        setUser({ id: data.user.id, email: data.user.email, name: data.user.name, token: data.token });
       } else {
         console.warn("⚠️ No se recibió un token en el registro");
       }
@@ -45,7 +48,9 @@ export const AuthProvider = ({ children }) => {
         localStorage.setItem("authToken", data.token);
         localStorage.setItem("userId", data.user.id);
         localStorage.setItem("userEmail", data.user.email);
-        setUser({ id: data.user.id, email: data.user.email, token: data.token });
+        localStorage.setItem("userName", data.user.name); // 🔥 Guardar nombre
+
+        setUser({ id: data.user.id, email: data.user.email, name: data.user.name, token: data.token });
       } else {
         console.warn("⚠️ No se recibió un token en el login");
       }
@@ -60,6 +65,8 @@ export const AuthProvider = ({ children }) => {
     localStorage.removeItem("authToken");
     localStorage.removeItem("userId");
     localStorage.removeItem("userEmail");
+    localStorage.removeItem("userName"); // 🔥 Eliminar el nombre
+
     setUser(null);
   };
 
@@ -69,6 +76,7 @@ export const AuthProvider = ({ children }) => {
     </AuthContext.Provider>
   );
 };
+
 
 
 
