@@ -1,29 +1,14 @@
-import React, { useEffect, useState, useContext } from "react";
-import { useParams } from "react-router-dom";
-import { getProductById } from "../services/productServiceF";
+import React, { useContext, useState } from "react";
 import { CartContext } from "../context/CartContext";
 import { AuthContext } from "../context/AuthContext";
 
-const ProductPage = () => {
-  const { id } = useParams();
-  const [product, setProduct] = useState(null);
+const ProductPage = ({ product }) => {
   const { addToCart } = useContext(CartContext);
   const { user } = useContext(AuthContext);
+  const [quantity, setQuantity] = useState(1);
+  const [showSuccessMessage, setShowSuccessMessage] = useState(false); // 🔥 Estado para el mensaje
 
-  useEffect(() => {
-    const fetchProduct = async () => {
-      try {
-        const data = await getProductById(id);
-        setProduct(data);
-      } catch (error) {
-        console.error("Error al obtener producto:", error);
-      }
-    };
-
-    fetchProduct();
-  }, [id]);
-
-  if (!product) return <p>Cargando servicios...</p>;
+  if (!product) return <p>Producto no disponible</p>;
   if (user === undefined) return <p>Cargando usuario...</p>;
 
   const handleAddToCart = () => {
@@ -32,26 +17,42 @@ const ProductPage = () => {
       return;
     }
 
-    console.log(`🛒 Agregando producto al carrito: ${product._id} para el usuario ${user.id}`);
-    addToCart(product._id, 1);
+    addToCart(product._id, quantity); // 🔥 Agrega la cantidad seleccionada
+
+    // 🔥 Mostrar mensaje de éxito y ocultarlo después de 3 segundos
+    setShowSuccessMessage(true);
+    setTimeout(() => setShowSuccessMessage(false), 3000);
   };
 
   return (
-    <div className="product-page">
-      <img src={product.imageUrl || "/placeholder.jpg"} alt={product.name || "Producto"} />
-      <h2>{product.name || "Producto sin nombre"}</h2>
-      <p>{product.description || "Sin descripción"}</p>
-      <p className="price">${product.price !== undefined ? product.price : "N/A"}</p>
-      {user && user.id && user.token ? (
-        <button onClick={handleAddToCart}>Agregar al carrito</button>
-      ) : (
-        <p>Inicia sesión para comprar</p>
-      )}
+<div className="product-page">
+  <h2>{product.name || "Producto sin nombre"}</h2>
+  <img src={product.imageUrl || "/placeholder.jpg"} alt={product.name || "Producto"} />
+  <p>{product.description || "Sin descripción"}</p>
+  <p className="price">${product.price?.toLocaleString("es-CL")} por persona</p> {/* 🔥 Se asegura que el precio exista */}
+
+      {/* 🔥 Contenedor del botón y los botones de cantidad */}
+      <div className="cart-controls">
+        {/* 🔥 Mensaje de éxito sobre el botón */}
+        {showSuccessMessage && <p className="success-message">✅ Agregado al carrito exitosamente</p>}
+
+        <button className="quantity-btn" onClick={() => setQuantity(Math.max(1, quantity - 1))}>-</button>
+        <button className="add-to-cart-btn" onClick={handleAddToCart}>
+          Agregar {quantity} {quantity === 1 ? "persona" : "personas"} al carrito
+        </button>
+        <button className="quantity-btn" onClick={() => setQuantity(quantity + 1)}>+</button>
+      </div>
+
+      {!user && <p>Inicia sesión para comprar</p>}
     </div>
   );
 };
 
 export default ProductPage;
+
+
+
+
 
 
 
