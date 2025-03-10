@@ -235,28 +235,40 @@ header nav a:hover {
 
 /* 🔹 Contenedor principal del carrito */
 .cart {
-  max-width: 800px;
-  margin: 50px auto;
-  padding: 20px;
-  background: #2e482c; /* 🔥 Fondo claro */
-  border-radius: 12px;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background: url('/src/assets/images/fondo-home.png') no-repeat center center;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  color: black;
   text-align: center;
+}
+
+.quantity-controls {
+color: black;
+font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+font-size: 1rem;
 }
 
 /* 🔹 Título */
 .cart h2 {
   font-size: 2rem;
   margin-bottom: 20px;
-  font-family: "Playfair Display", serif;
   color: white;
-  font-family:'playfair display', cursive;
+  font-family:'playfair display', cursive !important;
+  margin: 27px;
 }
 
 /* 🔹 Mensaje cuando el carrito está vacío */
 .cart p {
   font-size: 1.2rem;
-  color: #666;
+  color: black;
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
 
 /* 🔹 Lista de productos en el carrito */
@@ -275,6 +287,7 @@ header nav a:hover {
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   background: white;
   border-radius: 8px;
+  width: 450px
 }
 
 /* 🔹 Imagen del producto */
@@ -304,6 +317,23 @@ header nav a:hover {
 
 .cart button:hover {
   background: #cc0000;
+}
+
+.subtotal {
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    font-size: 1.3rem;
+    background-color: white;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    padding: 0px 10px; /* 🔥 Elimina casi todo el padding vertical */
+    width: 450px; /* 🔥 Mantiene el ancho */
+    max-height: 40px !important; /* 🔥 Evita que crezca más */
+}
+
+.cart h3 {
+  color:  #2e482c;
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
 
 /* 🔹 Contenedor de checkout */
