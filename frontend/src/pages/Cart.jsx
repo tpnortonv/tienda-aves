@@ -1,54 +1,103 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { CartContext } from "../context/CartContext";
-import { AuthContext } from "../context/AuthContext";
 import { Link } from "react-router-dom";
 
 const Cart = () => {
-  const { cart, removeFromCart } = useContext(CartContext);  // Asegúrate de acceder correctamente a cart
-  const { user } = useContext(AuthContext);
+  const { cart, removeFromCart, addToCart } = useContext(CartContext);
+  const [localCart, setLocalCart] = useState(cart);
 
-  // Verificar si `cart` es un array y no está vacío
-  if (!Array.isArray(cart) || cart.length === 0) {
-    return (
-      <div className="cart">
-        <h2>Carrito de Compras</h2>
-        <p>Tu carrito está vacío</p>
-      </div>
+  // 🔹 Formatear precios con punto para los miles
+  const formatPrice = (price) => {
+    return price ? price.toLocaleString("es-CL") : "0";
+  };
+
+  // 🔹 Control de cantidad con actualización local
+  const handleQuantityChange = (productId, newQuantity) => {
+    if (newQuantity < 1) return; // Evitar cantidades menores a 1
+
+    // 🔥 Actualizamos localmente para evitar parpadeos
+    const updatedCart = localCart.map((item) =>
+      item.productId._id === productId ? { ...item, quantity: newQuantity } : item
     );
-  }
+    setLocalCart(updatedCart);
+
+    // 🔄 Enviamos la actualización al backend
+    addToCart(productId, newQuantity);
+  };
+
+  // 🔹 Eliminar producto con actualización inmediata
+  const handleRemoveFromCart = (productId) => {
+    // 🔥 Eliminamos localmente para evitar parpadeos
+    const updatedCart = localCart.filter((item) => item.productId._id !== productId);
+    setLocalCart(updatedCart);
+
+    // 🔄 Luego, enviamos la petición al backend
+    removeFromCart(productId);
+  };
+
+  // 🔹 Calcular subtotal total del carrito
+  const subtotal = localCart.reduce(
+    (acc, item) => acc + (item.productId?.price || 0) * item.quantity,
+    0
+  );
 
   return (
     <div className="cart">
       <h2>Carrito de Compras</h2>
-      <ul>
-        {cart.map((item) => (
-          <li key={`${item.productId._id}-${item.quantity}`}>
-            <img
-              src={item.productId.imageUrl}
-              alt={item.productId.name}
-              style={{ width: "100px", height: "100px" }}  // Ajusta las imágenes según desees
-            />
-            <div>
-              <h3>{item.productId.name}</h3>
-              <p>${item.productId.price}</p>
-              <p>Cantidad de personas: {item.quantity}</p>
-              <button
-                onClick={() => {
-                  if (item.productId && item.productId._id) { // 🔥 Verificamos antes de eliminar
-                    console.log(`🗑️ Eliminando producto: ${item.productId._id}`);
-                    removeFromCart(item.productId._id);
-                  } else {
-                    console.error("❌ Error: `productId` es undefined, no se puede eliminar.");
-                  }
-                }}
-              >
-                Eliminar
-              </button>
 
-            </div>
-          </li>
-        ))}
-      </ul>
+      {localCart.length === 0 ? (
+        <p>Tu carrito está vacío</p>
+      ) : (
+        <ul>
+          {localCart.map((item) => {
+            const { productId } = item;
+            if (!productId) return null; 
+
+            return (
+              <li key={productId._id}>
+                <img 
+                  src={productId.imageUrl || "/src/assets/images/placeholder.png"} 
+                  alt={productId.name || "Producto"} 
+                  onError={(e) => (e.target.src = "/src/assets/images/placeholder.png")} 
+                />
+                <div>
+                  <h3>{productId.name || "Producto sin nombre"}</h3>
+
+                  <p>Precio unitario: ${formatPrice(productId.price)}</p>
+                  
+                  {/* 🔹 Controles de cantidad */}
+                  <div className="quantity-controls">
+                    <button 
+                      onClick={() => handleQuantityChange(productId._id, item.quantity - 1)}
+                      disabled={item.quantity <= 1}
+                    >
+                      -
+                    </button>
+                    <span>{item.quantity}</span>
+                    <button onClick={() => handleQuantityChange(productId._id, item.quantity + 1)}>
+                      +
+                    </button>
+                  </div>
+
+                  <p>Total: <strong>${formatPrice((productId.price || 0) * item.quantity)}</strong></p>
+                  
+                  {/* 🔹 Botón para eliminar */}
+                  <button className="remove-btn" onClick={() => handleRemoveFromCart(productId._id)}>
+                    Eliminar
+                  </button>
+                </div>
+              </li>
+            );
+          })}
+        </ul>
+      )}
+
+      {/* 🔹 Subtotal del carrito */}
+      <div className="subtotal">
+        <h3>Subtotal: ${formatPrice(subtotal)}</h3>
+      </div>
+
+      {/* 🔹 Checkout */}
       <div className="checkout">
         <Link to="/checkout" className="btn">
           Ir a pagar
@@ -59,6 +108,11 @@ const Cart = () => {
 };
 
 export default Cart;
+
+
+
+
+
 
 
 

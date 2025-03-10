@@ -233,6 +233,102 @@ header nav a:hover {
   box-shadow: none;
 }
 
+/* 🔹 Contenedor principal del carrito */
+.cart {
+  max-width: 800px;
+  margin: 50px auto;
+  padding: 20px;
+  background: #2e482c; /* 🔥 Fondo claro */
+  border-radius: 12px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+  text-align: center;
+}
+
+/* 🔹 Título */
+.cart h2 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+  font-family: "Playfair Display", serif;
+  color: white;
+  font-family:'playfair display', cursive;
+}
+
+/* 🔹 Mensaje cuando el carrito está vacío */
+.cart p {
+  font-size: 1.2rem;
+  color: #666;
+}
+
+/* 🔹 Lista de productos en el carrito */
+.cart ul {
+  list-style: none;
+  padding: 0;
+  margin: 20px 0;
+}
+
+/* 🔹 Cada producto en el carrito */
+.cart li {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 15px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  background: white;
+  border-radius: 8px;
+}
+
+/* 🔹 Imagen del producto */
+.cart img {
+  width: 80px;
+  height: 80px;
+  border-radius: 6px;
+  object-fit: cover;
+}
+
+/* 🔹 Detalles del producto */
+.cart div {
+  flex-grow: 1;
+  text-align: left;
+}
+
+/* 🔹 Botón de eliminar */
+.cart button {
+  background: #ff4d4d;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: background 0.3s;
+}
+
+.cart button:hover {
+  background: #cc0000;
+}
+
+/* 🔹 Contenedor de checkout */
+.checkout {
+  text-align: center;
+  margin-top: 20px;
+}
+
+/* 🔹 Botón de checkout */
+.checkout .btn {
+  display: inline-block;
+  padding: 12px 24px;
+  background: #2e482c;
+  color: white;
+  border-radius: 8px;
+  font-weight: bold;
+  text-decoration: none;
+  transition: all 0.3s;
+}
+
+.checkout .btn:hover {
+  background: #1c3618;
+}
+
+
 .footer {
   background-color: #2e482c;
   /* Verde bosque oscuro */
