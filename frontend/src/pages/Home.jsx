@@ -13,7 +13,8 @@ const Home = () => {
   const [showProducts, setShowProducts] = useState(location.state?.showProducts ?? false);
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [selectedProduct, setSelectedProduct] = useState(null); // 🔥 Controla el modal de productos
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [loadingModal, setLoadingModal] = useState(false); // 🔥 Nuevo estado para la carga en el modal
 
   // Estado para el modal de "Sobre Servicios"
   const [showAbout, setShowAbout] = useState(false);
@@ -32,6 +33,7 @@ const Home = () => {
     if (showProducts) {
       const fetchProducts = async () => {
         try {
+          setLoading(true);
           const data = await getProducts();
           setProducts(Array.isArray(data) ? data : []);
         } catch (error) {
@@ -44,6 +46,18 @@ const Home = () => {
       fetchProducts();
     }
   }, [showProducts]);
+
+  // 📌 Función para abrir la modal con carga
+  const handleOpenProductModal = async (product) => {
+    setLoadingModal(true); // 🔥 Activa el loading en la modal
+    setSelectedProduct(null);
+
+    // Simulamos un pequeño delay para que el loader sea visible
+    setTimeout(() => {
+      setSelectedProduct(product);
+      setLoadingModal(false); // 🔥 Desactiva el loading cuando el producto está listo
+    }, 500);
+  };
 
   return (
     <div className="home">
@@ -65,11 +79,13 @@ const Home = () => {
         <>
           <h1 className="services-title">Servicios</h1>
           {loading ? (
-            <p>Cargando servicios...</p>
+            <div className="loading-container">
+              <div className="loading-spinner"></div>
+            </div>
           ) : products.length > 0 ? (
             <div className="product-list">
               {products.map((product) => (
-                <ProductCard key={product._id} product={product} onClick={() => setSelectedProduct(product)} />
+                <ProductCard key={product._id} product={product} onClick={() => handleOpenProductModal(product)} />
               ))}
             </div>
           ) : (
@@ -82,7 +98,6 @@ const Home = () => {
       {showAbout && (
         <div className="modal-overlay">
           <div className="modal-content">
-            {/* 🔥 Botón de cerrar en la esquina superior derecha */}
             <button className="close-modal" onClick={() => setShowAbout(false)}>✖</button>
             <h2>Nuestros Servicios</h2>
             <img src={aboutImage} alt="Sobre Nosotros" className="modal-image" />
@@ -97,15 +112,22 @@ const Home = () => {
       )}
 
       {/* 🔥 MODAL PARA PRODUCTOS */}
-      {selectedProduct && (
+      {selectedProduct !== null || loadingModal ? (
         <div className="modal-overlay">
           <div className="modal-content">
-            {/* 🔥 Botón de cerrar en la esquina superior derecha */}
             <button className="close-modal" onClick={() => setSelectedProduct(null)}>✖</button>
-            <ProductPage product={selectedProduct} />
+            
+            {/* 🔄 Loader en la modal mientras carga el producto */}
+            {loadingModal ? (
+              <div className="loading-container-modal">
+                <div className="loading-spinner"></div>
+              </div>
+            ) : (
+              <ProductPage product={selectedProduct} />
+            )}
           </div>
         </div>
-      )}
+      ) : null}
     </div>
   );
 };

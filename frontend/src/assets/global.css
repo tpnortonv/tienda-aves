@@ -112,6 +112,101 @@ header nav a:hover {
   color: #2e482c;
 }
 
+/* 🔹 Contenedor principal de Login y SignUp */
+.signup, .login {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background: url('/src/assets/images/fondo-home.png') no-repeat center center;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  color: white;
+  text-align: center;
+}
+
+/* 🔹 Título */
+.signup h2, .login h2 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+  font-family: "Playfair Display", cursive;
+  font-weight: bold;
+  position: relative;
+  top: -90px; /* 🔥 Sube el título */
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+/* 🔹 Formulario */
+.signup form, .login form {
+  background: #2e482c;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+  width: 90%;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  position: relative;
+  top: -90px; /* 🔥 Sube el formulario */
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+/* 🔹 Inputs */
+.signup input, .login input {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  outline: none;
+  transition: 0.3s;
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
+/* 🔹 Efecto al hacer foco en el input */
+.signup input:focus, .login input:focus {
+  background: rgba(255, 255, 255, 0.9);
+  border: 2px solid white;
+  box-shadow: 0px 0px 8px rgba(255, 255, 255, 0.5);
+}
+
+/* 🔹 Botón */
+.signup button, .login button {
+  font-size: 1rem;
+  padding: 10px 20px;
+  background: #2e482c;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s;
+  font-family: 'Playfair Display', cursive;
+  max-width: 250px;
+  margin: 0 auto;
+  box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.5);
+}
+
+/* 🔹 Efecto hover en botón */
+.signup button:hover, .login button:hover {
+  background-color: white;
+  color: #2e482c;
+}
+
+/* 🔹 Efecto de entrada desde el centro */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.7); /* 🔥 Hace que aparezca más pequeño y crezca */
+  }
+  to {
+    opacity: 1;
+    transform: scale(1); /* 🔥 Expande a su tamaño original */
+  }
+}
+
 /* Estilos para el botón del carrito */
 .cart-btn {
   background: none;
@@ -204,22 +299,28 @@ textarea:focus {
   border-color: #4a6834;
   outline: none;
 }
+
 /* ======= TARJETAS DE PRODUCTO ======= */
 .product-list {
-  margin-top: 10px; /* 🔥 Reduce el margen superior */
+  margin-top: 10px;
+  /* 🔥 Reduce el margen superior */
   padding-top: 0;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* 🔥 Se ajusta a 3 por fila */
-  gap: 20px; /* Espacio entre tarjetas */
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  /* 🔥 Se ajusta a 3 por fila */
+  gap: 20px;
+  /* Espacio entre tarjetas */
   justify-content: center;
   width: 100%;
-  max-width: 1200px; /* 🔥 Máximo ancho para evitar que se estiren demasiado */
+  max-width: 1200px;
+  /* 🔥 Máximo ancho para evitar que se estiren demasiado */
   margin: 0 auto;
 }
 
 /* Estilos de cada tarjeta */
 .product-card {
-  width: 380px; /* 🔥 Para que se adapten al grid */
+  width: 380px;
+  /* 🔥 Para que se adapten al grid */
   height: 400px;
   border-radius: 8px;
   padding: 16px;
@@ -230,7 +331,8 @@ textarea:focus {
   color: white;
   display: flex;
   flex-direction: column;
-  justify-content: space-between; /* 🔥 Acomoda mejor el contenido */
+  justify-content: space-between;
+  /* 🔥 Acomoda mejor el contenido */
   align-items: center;
 }
 
@@ -331,12 +433,16 @@ textarea:focus {
 }
 
 .modal-content {
-  position: relative; /* 🔥 Necesario para posicionar la `✖` correctamente */
-  background: #2e482c; /* 🔥 Color verde oscuro */
+  position: relative;
+  /* 🔥 Necesario para posicionar la `✖` correctamente */
+  background: #2e482c;
+  /* 🔥 Color verde oscuro */
   padding: 30px;
   width: 80%;
-  max-width: 650px; /* 🔥 Ancho máximo más grande */
-  min-height: 300px; /* 🔥 Evita que sea demasiado corto */
+  max-width: 650px;
+  /* 🔥 Ancho máximo más grande */
+  min-height: 300px;
+  /* 🔥 Evita que sea demasiado corto */
   border-radius: 8px;
   text-align: center;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
@@ -375,21 +481,21 @@ textarea:focus {
 /* 🔥 Botón de cerrar (✖) en la esquina superior derecha */
 .close-modal {
   position: absolute;
-  top: 15px;  
-  right: 15px;  
-  font-size: 1.5rem;  
+  top: 15px;
+  right: 15px;
+  font-size: 1.5rem;
   background: none;
-  color: white;  
+  color: white;
   border: none;
   cursor: pointer;
   transition: color 0.3s ease;
-  z-index: 1001;  
+  z-index: 1001;
 }
 
 /* 🔥 Efecto hover */
 .close-modal:hover {
- font-size: 1.5rem;
- color: red;
+  font-size: 1.5rem;
+  color: red;
 }
 
 /* ======= BOTÓN "QUIÉNES SOMOS" ======= */
@@ -489,11 +595,15 @@ textarea:focus {
 
 /* 🔥 Imagen del producto */
 .product-page img {
-  width: 100%;  /* 🔥 Hace que la imagen se ajuste al ancho del contenedor */
-  max-width: 400px;  /* 🔥 Tamaño máximo uniforme para todas las imágenes */
-  height: 300px;  /* 🔥 Establece una altura fija para todas las imágenes */
+  width: 100%;
+  /* 🔥 Hace que la imagen se ajuste al ancho del contenedor */
+  max-width: 400px;
+  /* 🔥 Tamaño máximo uniforme para todas las imágenes */
+  height: 300px;
+  /* 🔥 Establece una altura fija para todas las imágenes */
   border-radius: 6px;
-  object-fit: cover;  /* 🔥 Recorta la imagen para que llene el espacio sin distorsión */
+  object-fit: cover;
+  /* 🔥 Recorta la imagen para que llene el espacio sin distorsión */
   margin-bottom: 20px;
 }
 
@@ -528,12 +638,13 @@ textarea:focus {
 
 .product-page button:hover {
   background-color: white;
-  color:  #2e482c;
+  color: #2e482c;
 }
 
 /* 🔥 Contenedor del botón y cantidad */
 .cart-controls {
-  position: relative; /* 🔥 Hace que el mensaje se posicione dentro de este contenedor */
+  position: relative;
+  /* 🔥 Hace que el mensaje se posicione dentro de este contenedor */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -575,8 +686,10 @@ textarea:focus {
 
 .success-message {
   position: absolute;
-  top: 60px; /* 🔥 Lo coloca encima del botón */
-  background: rgba(0, 128, 0, 0.9); /* 🔥 Verde con opacidad */
+  top: 60px;
+  /* 🔥 Lo coloca encima del botón */
+  background: rgba(0, 128, 0, 0.9);
+  /* 🔥 Verde con opacidad */
   color: white;
   padding: 8px 12px;
   border-radius: 6px;
@@ -589,9 +702,17 @@ textarea:focus {
 
 /* 🔥 Animación para desvanecer el mensaje */
 @keyframes fadeOut {
-  0% { opacity: 1; }
-  70% { opacity: 1; }
-  100% { opacity: 0; }
+  0% {
+    opacity: 1;
+  }
+
+  70% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+  }
 }
 
 .price {
@@ -599,6 +720,74 @@ textarea:focus {
   color: white;
   display: block;
   margin: 20px;
+}
+
+/* Estilo del botón cuando está bloqueado */
+.add-to-cart-btn:disabled {
+  background-color: #6c6c6c;
+  /* 🔥 Gris */
+  color: white;
+  /* 🔥 Letras blancas */
+  cursor: not-allowed;
+  /* 🔥 Cursor de prohibido */
+  border: 2px solid #a5a5a5;
+  /* 🔥 Bordes del mismo color */
+  opacity: 0.8;
+  /* 🔥 Ligero efecto de transparencia */
+}
+
+.loading-container-modal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  /* 🔥 Se posiciona dentro de la modal */
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -100%);
+  /* 🔥 Lo sube un poco más */
+  width: 100%;
+  height: 100%;
+}
+
+
+/* 🔄 Estilos generales del spinner */
+.loading-spinner {
+  width: 50px;
+  height: 50px;
+  border: 5px solid rgba(0, 0, 0, 0.3);
+  border-top-color: #2e482c;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  position: relative;
+  /* 🔥 Permite moverlo dentro del contenedor */
+  top: 150px;
+  /* 🔥 Baja el spinner */
+
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* 📌 Centrar mensaje "No hay servicios disponibles" */
+.centered-message {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  /* Ocupa toda la pantalla */
+  font-size: 1.5rem;
+  color: #6c6c6c;
+  /* Color gris oscuro */
+  font-weight: bold;
+  text-align: center;
 }
 
 /* ======= RESPONSIVE ======= */
