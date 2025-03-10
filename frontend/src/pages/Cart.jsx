@@ -1,10 +1,11 @@
 import React, { useContext, useState } from "react";
 import { CartContext } from "../context/CartContext";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const Cart = () => {
   const { cart, removeFromCart, addToCart } = useContext(CartContext);
   const [localCart, setLocalCart] = useState(cart);
+  const navigate = useNavigate();
 
   // 🔹 Formatear precios con punto para los miles
   const formatPrice = (price) => {
@@ -46,7 +47,7 @@ const Cart = () => {
       <h2>Carrito de Compras</h2>
 
       {localCart.length === 0 ? (
-        <p>Tu carrito está vacío</p>
+        <p class="carrito-vacio">¡Esta vacío 🥺! Encuentra la especie que buscas en Servicios</p>
       ) : (
         <>
           <ul>
@@ -72,7 +73,7 @@ const Cart = () => {
                       >
                         -
                       </button>
-                      <span>{item.quantity}</span>
+                      <span>{item.quantity} personas</span>
                       <button onClick={() => handleQuantityChange(productId._id, item.quantity + 1)}>
                         +
                       </button>
@@ -94,12 +95,12 @@ const Cart = () => {
           {subtotal > 0 && (
             <>
               <div className="subtotal">
-                <h3>Subtotal: ${formatPrice(subtotal)}</h3>
+                <span>Subtotal: ${formatPrice(subtotal)}</span>
               </div>
               <div className="checkout">
-                <Link to="/checkout" className="btn">
+                <button className="btn" onClick={() => navigate("/checkout")}>
                   Ir a pagar
-                </Link>
+                </button>
               </div>
             </>
           )}

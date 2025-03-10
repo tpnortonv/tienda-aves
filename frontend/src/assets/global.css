@@ -215,6 +215,14 @@ header nav a:hover {
   cursor: pointer;
 }
 
+.remove-btn{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 30px;
+  width: 90px;
+}
+
 /* Estilos para el ícono del carrito */
 .cart-icon {
   width: 30px;
@@ -239,6 +247,7 @@ header nav a:hover {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  position: relative;
   height: 100vh;
   background: url('/src/assets/images/fondo-home.png') no-repeat center center;
   background-size: cover;
@@ -250,50 +259,55 @@ header nav a:hover {
 }
 
 .quantity-controls {
-color: black;
-font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-font-size: 1rem;
+color: white;
+font-family: 'playfairdisplay', cursive;
+font-size: 1.3rem;
 }
 
 /* 🔹 Título */
 .cart h2 {
-  font-size: 2rem;
+  font-size: 2.7rem;
   margin-bottom: 20px;
   color: white;
   font-family:'playfair display', cursive !important;
   margin: 27px;
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.6);
 }
 
 /* 🔹 Mensaje cuando el carrito está vacío */
 .cart p {
-  font-size: 1.2rem;
-  color: black;
+  font-size: 0.8rem;
+  color: white;
   font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
 
 /* 🔹 Lista de productos en el carrito */
 .cart ul {
-  list-style: none;
-  padding: 0;
-  margin: 20px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 10px;
+  padding: 10px;
 }
 
 /* 🔹 Cada producto en el carrito */
 .cart li {
   display: flex;
   align-items: center;
-  gap: 15px;
+  gap: 11px;
   padding: 15px;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-  background: white;
+  background:  #2e482c;
   border-radius: 8px;
-  width: 450px
+  width: 450px;
+  height: 150px;
+  box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.5);
 }
 
 /* 🔹 Imagen del producto */
 .cart img {
-  width: 80px;
-  height: 80px;
+  width: 95px;
+  height: 95px;
   border-radius: 6px;
   object-fit: cover;
 }
@@ -306,34 +320,41 @@ font-size: 1rem;
 
 /* 🔹 Botón de eliminar */
 .cart button {
-  background: #ff4d4d;
+  font-size: 1rem;
+  padding: 1px 6px;
+  background: #2e482c;
   color: white;
-  border: none;
-  padding: 6px 12px;
-  cursor: pointer;
   border-radius: 6px;
-  transition: background 0.3s;
+  cursor: pointer;
+  transition: all 0.3s;
+  font-family: 'Playfair Display', cursive;
+  max-width: 250px;
+  margin: 10px;
+  box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.5);
 }
 
 .cart button:hover {
-  background: #cc0000;
+  background-color: white;
+  color: #2e482c;  
 }
 
 .subtotal {
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-    font-size: 1.3rem;
-    background-color: white;
+    font-size: 1.1rem;
+    background-color: #2e482c;
     border-radius: 8px;
     display: flex;
     align-items: center;
     padding: 0px 10px; /* 🔥 Elimina casi todo el padding vertical */
     width: 450px; /* 🔥 Mantiene el ancho */
-    max-height: 40px !important; /* 🔥 Evita que crezca más */
+    max-height: 40px; /* 🔥 Evita que crezca más */
+    color: white;
+    box-shadow: 4px 4px 10px rgba(254, 253, 253, 0.5);
 }
 
 .cart h3 {
-  color:  #2e482c;
-  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  color:  white;
+  font-family: 'playfair display', cursive
 }
 
 /* 🔹 Contenedor de checkout */
@@ -344,20 +365,33 @@ font-size: 1rem;
 
 /* 🔹 Botón de checkout */
 .checkout .btn {
-  display: inline-block;
-  padding: 12px 24px;
+  font-size: 1.3rem;
+  padding: 5px 10px;
   background: #2e482c;
   color: white;
-  border-radius: 8px;
-  font-weight: bold;
-  text-decoration: none;
+  border-radius: 6px;
+  cursor: pointer;
   transition: all 0.3s;
+  font-family: 'Playfair Display', cursive;
+  width: 150px;
+  height: 47px;
+  margin: 5px;
+  border: 2px solid white;
+  box-shadow: 4px 4px 10px rgba(254, 253, 253, 0.5);
 }
 
 .checkout .btn:hover {
-  background: #1c3618;
+  background: white;
+  color: #2e482c;
 }
 
+.carrito-vacio{
+  font-size: 1rem !important;
+  background-color:  rgba(0, 128, 0, 0.9);;
+  border-radius: 10px;
+  padding: 10px;
+  margin-top: -10px;
+}
 
 .footer {
   background-color: #2e482c;
@@ -366,7 +400,7 @@ font-size: 1rem;
   text-align: center;
   padding: 20px;
   width: 100%;
-  font-family: 'Playfair Display', cursive;
+  font-family: "Playfair Display", cursive;
 }
 
 .footer-info {
@@ -675,6 +709,12 @@ textarea:focus {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+.home h1{
+  font-size: 3rem;
+  font-family: 'playfair display', cursive !important;
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.6);
 }
 
 .home-page .product-card {
