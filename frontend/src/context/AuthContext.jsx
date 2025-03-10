@@ -1,4 +1,4 @@
-import React, { createContext, useState, useEffect } from "react";
+import React, { createContext, useState, useEffect, useContext } from "react";
 import { register, login, logout } from "../services/authServiceF";
 
 export const AuthContext = createContext();
@@ -76,6 +76,12 @@ export const AuthProvider = ({ children }) => {
     </AuthContext.Provider>
   );
 };
+
+// Hook personalizado para acceder al contexto de autenticación
+export const useAuth = () => {
+  return useContext(AuthContext);
+};
+
 
 
 

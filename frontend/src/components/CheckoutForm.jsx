@@ -1,127 +1,110 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
 import { useStripe, useElements, CardElement } from "@stripe/react-stripe-js";
+import { useNavigate } from "react-router-dom"; // 🚀 Importar useNavigate
 import { createPaymentIntent, savePaymentDetails } from "../services/paymentServiceF";
 
-const CheckoutForm = ({ user, cart }) => {
+const CheckoutForm = ({ user, totalAmount }) => {
   const stripe = useStripe();
   const elements = useElements();
-  const navigate = useNavigate();
-  const [loading, setLoading] = useState(false);
-  const [errorMessage, setErrorMessage] = useState(""); // Estado para manejar mensajes de error
+  const navigate = useNavigate(); // 🔄 Hook para redirigir
+  const [clientSecret, setClientSecret] = useState("");
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [message, setMessage] = useState("");
 
-  const handlePayment = async (e) => {
-    e.preventDefault();
-  
-    if (!stripe || !elements) {
+  useEffect(() => {
+    if (!user || totalAmount <= 0) {
+      console.warn("⚠️ Usuario inválido o monto incorrecto:", { user, totalAmount });
       return;
     }
-  
-    setLoading(true);
-  
-    const totalAmount = cart.reduce((sum, item) => sum + item.quantity * item.productId.price, 0);
-    console.log("Total Amount:", totalAmount);
-  
-    try {
-      // Crear un método de pago con Stripe
-      const { error, paymentMethod } = await stripe.createPaymentMethod({
-        type: "card",
-        card: elements.getElement(CardElement),
-      });
-  
-      if (error) {
-        console.log("Error al crear paymentMethod:", error);
-        setErrorMessage(error.message);
-        setLoading(false);
-        return;
+
+    const fetchPaymentIntent = async () => {
+      try {
+        console.log("🔎 Enviando a createPaymentIntent:", { amount: totalAmount, userId: user.id });
+        const data = await createPaymentIntent(totalAmount, user.id);
+        setClientSecret(data.clientSecret);
+      } catch (error) {
+        console.error("❌ Error al crear PaymentIntent:", error);
+        setMessage("Error al procesar el pago.");
       }
-  
-      console.log("paymentMethod creado correctamente:", paymentMethod);
-  
-      // Crear PaymentIntent en el backend
-      const { clientSecret, paymentIntentId } = await createPaymentIntent(
-        totalAmount,
-        user.email,
-        user.name,
-        paymentMethod.id
-      );
-  
-      console.log("Client Secret recibido:", clientSecret);
-      console.log("PaymentIntent ID recibido:", paymentIntentId);
-  
-      if (!clientSecret) {
-        setErrorMessage("No se pudo obtener el clientSecret.");
-        setLoading(false);
-        return;
-      }
-  
-      // Verificar que paymentIntentId no esté vacío
-      if (!paymentIntentId) {
-        setErrorMessage("El PaymentIntent ID no está definido.");
-        setLoading(false);
-        return;
-      }
-  
-      // Verificar que stripe esté cargado
-      if (!stripe) {
-        setErrorMessage("Stripe no está cargado.");
-        setLoading(false);
-        return;
-      }
-  
-      // Obtener el estado del PaymentIntent
-      console.log('Recuperando PaymentIntent con ID:', paymentIntentId);
-      const paymentIntent = await stripe.paymentIntents.retrieve(paymentIntentId);
-      console.log('Estado del PaymentIntent:', paymentIntent.status);
-  
-      // Si ya está confirmado, no intentamos confirmarlo de nuevo
-      if (paymentIntent.status === 'succeeded') {
-        alert("El pago ya ha sido procesado.");
-        setLoading(false);
-        return;
-      }
-  
-      // Confirmar el pago con Stripe
-      const { error: confirmError, paymentIntentConfirmed } = await stripe.confirmCardPayment(clientSecret, {
-        payment_method: paymentMethod.id,
-      });
-  
-      if (confirmError) {
-        console.log("Error en la confirmación del pago:", confirmError);
-        setErrorMessage(confirmError.message);
-        setLoading(false);
-        return;
-      }
-  
-      console.log("PaymentIntent confirmado:", paymentIntentConfirmed);
-  
-      if (paymentIntentConfirmed.status === "succeeded") {
-        // Si el pago es exitoso, guarda los detalles
-        await savePaymentDetails(user.id, paymentIntentId, totalAmount);
-        alert("Pago realizado con éxito");
-        navigate("/"); // Redirige al inicio
-      }
-  
-    } catch (error) {
-      setErrorMessage("Hubo un error al procesar el pago. Intenta nuevamente.");
-      console.error("Error en el proceso de pago:", error);
-      setLoading(false);
+    };
+
+    fetchPaymentIntent();
+  }, [user, totalAmount]);
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    setIsProcessing(true);
+    setMessage("");
+
+    if (!stripe || !elements || !clientSecret) {
+      console.error("⚠️ Stripe no está listo o falta el clientSecret.");
+      setIsProcessing(false);
+      return;
     }
+
+    const cardElement = elements.getElement(CardElement);
+    if (!cardElement) {
+      console.error("⚠️ No se encontró el CardElement.");
+      setIsProcessing(false);
+      return;
+    }
+
+    console.log("💳 Confirmando pago en Stripe...");
+    const { paymentIntent, error } = await stripe.confirmCardPayment(clientSecret, {
+      payment_method: { card: cardElement },
+    });
+
+    if (error) {
+      console.error("❌ Error al confirmar el pago:", error.message);
+      setMessage(error.message);
+      setIsProcessing(false);
+      return;
+    }
+
+    console.log("✅ Pago confirmado en Stripe:", paymentIntent);
+
+    if (paymentIntent.status === "succeeded") {
+      try {
+        await savePaymentDetails(user.id, paymentIntent.id, totalAmount);
+        console.log("✅ Pago guardado en la base de datos.");
+        setMessage("Pago realizado con éxito 🎉");
+
+        // 🔄 Redirigir al usuario a la página de éxito
+        setTimeout(() => {
+          navigate("/success");
+        }, 2000); // Pequeño retraso para mostrar el mensaje antes de redirigir
+      } catch (error) {
+        console.error("❌ Error al guardar pago en la BD:", error);
+        setMessage("Pago confirmado, pero hubo un error guardándolo.");
+      }
+    } else {
+      setMessage("Hubo un problema con la confirmación del pago.");
+    }
+
+    setIsProcessing(false);
   };
-  
+
   return (
-    <form className="checkout-form" onSubmit={handlePayment}>
-      <h2>Pago</h2>
-      {errorMessage && <div className="error-message">{errorMessage}</div>}
+    <form onSubmit={handleSubmit}>
+      <h3>Introduce los datos de tu tarjeta</h3>
       <CardElement />
-      <button type="submit" disabled={loading || !stripe}>
-        {loading ? "Procesando..." : "Pagar"}
+      <button type="submit" disabled={!stripe || !elements || isProcessing}>
+        {isProcessing ? "Procesando..." : "Pagar"}
       </button>
+      {message && <p>{message}</p>}
     </form>
   );
 };
 
 export default CheckoutForm;
+
+
+
+
+
+
+
+
 
 
 
