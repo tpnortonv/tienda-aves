@@ -6,54 +6,67 @@ export const getCart = async (userId, token) => {
       headers: { "x-auth-token": token }
     });
 
-    console.log("🚀 Datos recibidos en `getCart()`:", response.data); // 🔥 Verifica la respuesta
+    console.log("🚀 Datos recibidos en `getCart()`:", response.data);
 
     if (response.data && response.data.cart && Array.isArray(response.data.cart.products)) {
-      return response.data.cart; // 🔥 Solo devolvemos el `cart` con `products`
+      return response.data.cart;
     } else {
       console.warn("⚠️ `getCart()` no devolvió un carrito válido.");
-      return { products: [] }; // Evita `undefined`
+      return { products: [] };
     }
   } catch (error) {
     console.error("❌ Error en `getCart()`:", error);
-    return { products: [] }; // Asegurar que al menos devuelva un array vacío
+    return { products: [] };
   }
 };
 
-
-// Agregar o actualizar un producto en el carrito
+// ✅ **Corrección en `createOrUpdateCart`**
 export const createOrUpdateCart = async (userId, productId, quantity, token) => {
   try {
+    if (isNaN(quantity) || quantity < 1) {
+      console.error("❌ Error en `createOrUpdateCart()`: Cantidad inválida:", quantity);
+      return;
+    }
+
+    console.log(`📤 Enviando actualización al carrito: { userId: ${userId}, productId: ${productId}, quantity: ${quantity} }`);
+
     const response = await api.post(
       "/cart",
       { userId, productId, quantity },
       {
         headers: {
-          "x-auth-token": token, // 🔹 Enviando correctamente el token
+          "x-auth-token": token,
         },
       }
     );
+
+    console.log("✅ Respuesta recibida en `createOrUpdateCart()`:", response.data);
     return response.data;
   } catch (error) {
-    console.error("❌ Error en `createOrUpdateCart`:", error.response?.data || error.message);
+    console.error("❌ Error en `createOrUpdateCart()`: ", error.response?.data || error.message);
     throw error;
   }
 };
 
-// Eliminar un producto del carrito
+// ✅ **Corrección en `removeProductFromCart`**
 export const removeProductFromCart = async (userId, productId, token) => {
   try {
+    console.log(`🗑 Eliminando producto ${productId} del carrito de usuario ${userId}`);
+
     const response = await api.delete(`/cart/${userId}/${productId}`, {
       headers: {
-        "x-auth-token": token, // 🔹 Header en minúsculas
+        "x-auth-token": token,
       },
     });
+
+    console.log("✅ Producto eliminado correctamente:", response.data);
     return response.data;
   } catch (error) {
-    console.error("❌ Error en `removeProductFromCart`:", error.response?.data || error.message);
+    console.error("❌ Error en `removeProductFromCart()`:", error.response?.data || error.message);
     throw error;
   }
 };
+
 
 
 

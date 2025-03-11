@@ -16,7 +16,7 @@ const createOrUpdateCart = async (req, res) => {
       );
 
       if (productIndex !== -1) {
-        cart.products[productIndex].quantity += quantity; // Sumar la cantidad
+        cart.products[productIndex].quantity = quantity; // Sumar la cantidad
       } else {
         cart.products.push({ productId, quantity }); // Agregar producto al carrito
       }

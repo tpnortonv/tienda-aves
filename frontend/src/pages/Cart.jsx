@@ -9,16 +9,24 @@ const Cart = () => {
   // 🔹 Formatear precios con punto para los miles
   const formatPrice = (price) => (price ? price.toLocaleString("es-CL") : "0");
 
-  // 🔹 Control de cantidad con actualización en el contexto
-  const handleQuantityChange = async (productId, newQuantity) => {
+  const handleQuantityChange = async (productId, change) => {
+    const item = cart.find((p) => p.productId._id === productId);
+    if (!item) return;
+  
+    const newQuantity = item.quantity + change;
     if (newQuantity < 1) return; // Evita cantidades inválidas
-
+  
+    console.log(`🔄 Intentando actualizar cantidad en carrito`);
+    console.log(`📌 Producto ID: ${productId}`);
+    console.log(`🔢 Cantidad actual en frontend: ${item.quantity}`);
+    console.log(`📥 Nueva cantidad a enviar: ${newQuantity}`);
+  
     try {
-      await addToCart(productId, newQuantity); // 🔄 Actualiza en `CartContext`
+      await addToCart(productId, newQuantity);
     } catch (error) {
       console.error("❌ Error al actualizar la cantidad:", error);
     }
-  };
+  };  
 
   // 🔹 Calcular subtotal
   const subtotal = cart.reduce(
@@ -44,14 +52,14 @@ const Cart = () => {
                   {/* 🔹 Controles de cantidad */}
                   <div className="quantity-controls">
                     <button
-                      onClick={() => handleQuantityChange(item.productId._id, item.quantity - 1)}
+                      onClick={() => handleQuantityChange(item.productId._id, -1)}
                       disabled={item.quantity <= 1}
                     >
                       -
                     </button>
                     <span>{item.quantity} personas</span>
                     <button
-                      onClick={() => handleQuantityChange(item.productId._id, item.quantity + 1)}
+                      onClick={() => handleQuantityChange(item.productId._id, 1)}
                     >
                       +
                     </button>
@@ -87,6 +95,8 @@ const Cart = () => {
 };
 
 export default Cart;
+
+
 
 
 
