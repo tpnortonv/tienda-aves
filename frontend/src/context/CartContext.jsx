@@ -19,13 +19,13 @@ export const CartProvider = ({ children }) => {
       try {
         const cartData = await getCart(user.id, user.token);
         console.log("🛒 Carrito recibido desde la API:", cartData);
-    
+
         if (cartData && cartData.products) {
           console.log("📌 Cantidades de productos en el backend:", cartData.products.map(p => ({
             id: p.productId._id,
             cantidad: p.quantity
           })));
-    
+
           setCart(cartData.products);
           localStorage.setItem("cart", JSON.stringify(cartData.products));
         } else {
@@ -41,7 +41,7 @@ export const CartProvider = ({ children }) => {
     fetchCart();
   }, [user]);
 
-  // 🔹 Agregar o actualizar cantidad de un producto en el carrito (Corrección)
+  // 🔹 Agregar o actualizar cantidad de un producto en el carrito
   const addToCart = async (productId, newQuantity) => {
     if (!user || !user.id || !user.token) return;
     if (isNaN(newQuantity) || newQuantity < 1) return;
@@ -88,12 +88,20 @@ export const CartProvider = ({ children }) => {
     }
   };
 
+  // 🔹 Función para limpiar el carrito después del pago exitoso
+  const clearCart = () => {
+    console.log("🛒 Limpiando carrito después del pago exitoso...");
+    setCart([]);
+    localStorage.removeItem("cart"); // 🔥 También limpiar localStorage
+  };
+
   return (
-    <CartContext.Provider value={{ cart, addToCart, removeFromCart }}>
+    <CartContext.Provider value={{ cart, addToCart, removeFromCart, clearCart }}>
       {children}
     </CartContext.Provider>
   );
 };
+
 
 
 

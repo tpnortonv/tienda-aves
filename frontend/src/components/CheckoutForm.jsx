@@ -1,12 +1,14 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useStripe, useElements, CardElement } from "@stripe/react-stripe-js";
-import { useNavigate } from "react-router-dom"; // 🚀 Importar useNavigate
+import { useNavigate } from "react-router-dom";
 import { createPaymentIntent, savePaymentDetails } from "../services/paymentServiceF";
+import { CartContext } from "../context/CartContext"; 
 
 const CheckoutForm = ({ user, totalAmount }) => {
   const stripe = useStripe();
   const elements = useElements();
-  const navigate = useNavigate(); // 🔄 Hook para redirigir
+  const navigate = useNavigate();
+  const { clearCart } = useContext(CartContext);
   const [clientSecret, setClientSecret] = useState("");
   const [isProcessing, setIsProcessing] = useState(false);
   const [message, setMessage] = useState("");
@@ -69,10 +71,10 @@ const CheckoutForm = ({ user, totalAmount }) => {
         console.log("✅ Pago guardado en la base de datos.");
         setMessage("Pago realizado con éxito 🎉");
 
-        // 🔄 Redirigir al usuario a la página de éxito
+        // 🔄 Redirigir al usuario a la página de éxito (sin limpiar el carrito aquí)
         setTimeout(() => {
           navigate("/success");
-        }, 2000); // Pequeño retraso para mostrar el mensaje antes de redirigir
+        }, 2000); 
       } catch (error) {
         console.error("❌ Error al guardar pago en la BD:", error);
         setMessage("Pago confirmado, pero hubo un error guardándolo.");
@@ -97,6 +99,7 @@ const CheckoutForm = ({ user, totalAmount }) => {
 };
 
 export default CheckoutForm;
+
 
 
 
