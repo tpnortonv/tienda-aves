@@ -2,7 +2,9 @@ import React, { useState, useEffect, useContext } from "react";
 import { useStripe, useElements, CardElement } from "@stripe/react-stripe-js";
 import { useNavigate } from "react-router-dom";
 import { createPaymentIntent, savePaymentDetails } from "../services/paymentServiceF";
-import { CartContext } from "../context/CartContext"; 
+import { CartContext } from "../context/CartContext";
+
+import { Box, Button, Typography, Card, CardContent, CircularProgress, Stack } from "@mui/material";
 
 const CheckoutForm = ({ user, totalAmount }) => {
   const stripe = useStripe();
@@ -39,14 +41,12 @@ const CheckoutForm = ({ user, totalAmount }) => {
     setMessage("");
 
     if (!stripe || !elements || !clientSecret) {
-      console.error("⚠️ Stripe no está listo o falta el clientSecret.");
       setIsProcessing(false);
       return;
     }
 
     const cardElement = elements.getElement(CardElement);
     if (!cardElement) {
-      console.error("⚠️ No se encontró el CardElement.");
       setIsProcessing(false);
       return;
     }
@@ -57,26 +57,19 @@ const CheckoutForm = ({ user, totalAmount }) => {
     });
 
     if (error) {
-      console.error("❌ Error al confirmar el pago:", error.message);
       setMessage(error.message);
       setIsProcessing(false);
       return;
     }
 
-    console.log("✅ Pago confirmado en Stripe:", paymentIntent);
+    console.log("✅ Pago confirmado:", paymentIntent);
 
     if (paymentIntent.status === "succeeded") {
       try {
         await savePaymentDetails(user.id, paymentIntent.id, totalAmount);
-        console.log("✅ Pago guardado en la base de datos.");
         setMessage("Pago realizado con éxito 🎉");
-
-        // 🔄 Redirigir al usuario a la página de éxito (sin limpiar el carrito aquí)
-        setTimeout(() => {
-          navigate("/success");
-        }, 2000); 
+        setTimeout(() => navigate("/success"), 2000);
       } catch (error) {
-        console.error("❌ Error al guardar pago en la BD:", error);
         setMessage("Pago confirmado, pero hubo un error guardándolo.");
       }
     } else {
@@ -87,18 +80,36 @@ const CheckoutForm = ({ user, totalAmount }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <h3>Introduce los datos de tu tarjeta</h3>
-      <CardElement />
-      <button type="submit" disabled={!stripe || !elements || isProcessing}>
-        {isProcessing ? "Procesando..." : "Pagar"}
-      </button>
-      {message && <p>{message}</p>}
-    </form>
+    <Card className="payment-card">
+      <CardContent>
+        <Typography className="payment-title">
+          Introduce los datos de tu tarjeta
+        </Typography>
+
+        <Box component="form" className="payment-form" onSubmit={handleSubmit}>
+          <Box className="card-input-container">
+            <CardElement />
+          </Box>
+
+          <Stack className="payment-actions">
+            <Button
+              type="submit"
+              className="payment-button"
+              disabled={!stripe || !elements || isProcessing}
+            >
+              {isProcessing ? <CircularProgress size={24} className="payment-spinner" /> : "Pagar"}
+            </Button>
+
+            {message && <Typography className="payment-error">{message}</Typography>}
+          </Stack>
+        </Box>
+      </CardContent>
+    </Card>
   );
 };
 
 export default CheckoutForm;
+
 
 
 

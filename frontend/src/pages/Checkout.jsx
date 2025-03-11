@@ -3,6 +3,8 @@ import { AuthContext } from "../context/AuthContext";
 import { CartContext } from "../context/CartContext";
 import CheckoutForm from "../components/CheckoutForm";
 
+import { Box, Typography, Card, CardContent, List, ListItem, ListItemText, Divider, Grid } from "@mui/material";
+
 const Checkout = () => {
   const { user } = useContext(AuthContext);
   const { cart } = useContext(CartContext);
@@ -20,36 +22,64 @@ const Checkout = () => {
   console.log("💰 Total calculado:", totalAmount);
 
   return (
-    <div className="checkout">
-      <h2>Finalizar compra</h2>
+    <Box className="checkout-container">
+      <Typography variant="h4" className="checkout-title">
+        Finalizar compra
+      </Typography>
 
       {user && cart.length > 0 ? (
-        <>
-          <div className="order-summary">
-            <h3>Resumen de tu pedido</h3>
-            <ul>
-              {cart.map((item) => (
-                <li key={item.productId._id}>
-                  <span>{item.quantity} x {item.productId.name}</span>
-                  <strong>${(item.quantity * (item.productId?.price || 0)).toLocaleString("es-CL")}</strong>
-                </li>
-              ))}
-            </ul>
-            <div className="total">
-              <h3>Total: ${totalAmount.toLocaleString("es-CL")}</h3>
-            </div>
-          </div>
+        <Grid container spacing={3} className="checkout-content">
+          {/* 🛍 Resumen del pedido */}
+          <Grid item xs={12} md={6}>
+            <Card className="checkout-card">
+              <CardContent>
+                <Typography variant="h6" className="checkout-subtitle">
+                  Resumen de tu pedido
+                </Typography>
+                <List className="checkout-summary">
+                  {cart.map((item) => (
+                    <React.Fragment key={item.productId._id}>
+                      <ListItem className="checkout-item">
+                        <ListItemText
+                          primary={`${item.quantity} x ${item.productId.name}`}
+                          secondary={`Precio unitario: $${item.productId?.price.toLocaleString("es-CL")}`}
+                        />
+                        <Typography className="checkout-price">
+                          ${ (item.quantity * (item.productId?.price || 0)).toLocaleString("es-CL") }
+                        </Typography>
+                      </ListItem>
+                      <Divider />
+                    </React.Fragment>
+                  ))}
+                </List>
 
-          <CheckoutForm user={user} cart={cart} totalAmount={totalAmount} />
-        </>
+                <Box className="checkout-total">
+                  <Typography variant="h6">
+                    Total: ${totalAmount.toLocaleString("es-CL")}
+                  </Typography>
+                </Box>
+              </CardContent>
+            </Card>
+          </Grid>
+
+          {/* 💳 Formulario de pago */}
+          <Grid item xs={12} md={6}>
+            <CheckoutForm user={user} cart={cart} totalAmount={totalAmount} />
+          </Grid>
+        </Grid>
       ) : (
-        <p>Tu carrito está vacío o no has iniciado sesión.</p>
+        <Typography className="checkout-empty">
+          Tu carrito está vacío o no has iniciado sesión.
+        </Typography>
       )}
-    </div>
+    </Box>
   );
 };
 
 export default Checkout;
+
+
+
 
 
 

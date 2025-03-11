@@ -968,3 +968,235 @@ textarea:focus {
     grid-template-columns: 1fr;
   }
 }
+
+/* ======= Checkout Styles ======= */
+.checkout-title {
+  text-align: center;
+  font-size: 2.5rem !important;
+  padding: 30px;
+  color: white;
+  font-family: 'Playfair Display', cursive !important;
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.6);
+}
+
+.checkout-container {
+  display: flex;
+  flex-direction: column; /* Asegura que el contenido esté en una sola columna */
+  align-items: center; /* Centra horizontalmente */
+  justify-content: center; /* Centra verticalmente */
+  height: 100vh; /* Asegura que el contenido ocupe toda la altura de la pantalla */
+  width: 100%; /* Asegura que use todo el ancho disponible */
+  text-align: center; /* Centra el texto dentro de los elementos */
+  background-image: url('/src/assets/images/fondo-home.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  padding: 20px;
+}
+
+/* 🔹 Contenedor de los elementos dentro del checkout */
+.checkout-content {
+  display: flex;
+  flex-direction: column; /* Asegura que los elementos se apilen verticalmente */
+  align-items: center; /* Centra los elementos en la columna */
+  justify-content: center; /* Centra verticalmente */
+  width: 100%;
+  max-width: 900px; /* Ajusta el ancho para mantenerlo legible */
+  gap: 20px; /* Espaciado entre los elementos */
+}
+
+/* 🔹 Asegurar que las tarjetas de resumen y pago estén alineadas */
+.checkout-card {
+  width: 100%;
+  max-width: 450px; /* Ajusta el tamaño máximo de las tarjetas */
+  text-align: center; /* Asegura que el contenido esté alineado */
+  padding: 20px;
+  border-radius: 8px;
+  background: white;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.checkout-subtitle {
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: #2e482c;
+  margin-bottom: 10px;
+}
+
+/* Lista de productos en el checkout */
+.checkout-summary {
+  list-style: none;
+  padding: 0;
+}
+
+.checkout-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid #e0e0e0;
+  font-size: 1rem;
+}
+
+.checkout-price {
+  font-weight: bold;
+  color: #2e482c;
+}
+
+/* Total del pedido */
+.checkout-total {
+  text-align: right;
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: #2e482c;
+  margin-top: 15px;
+}
+
+/* Mensaje cuando el carrito está vacío */
+.checkout-empty {
+  text-align: center;
+  font-size: 1.2rem;
+  color: #888;
+  margin-top: 20px;
+}
+
+/* ======= Payment Form Styles ======= */
+.payment-card {
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);
+  padding: 20px;
+  width: 100%;
+  max-width: 420px;
+}
+
+.payment-title {
+  font-size: 1.4rem;
+  font-weight: bold;
+  text-align: center;
+  color: #2e482c;
+}
+
+.payment-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+/* Input de la tarjeta */
+.card-input-container {
+  border: 2px solid #2e482c;
+  border-radius: 8px;
+  padding: 12px;
+  background-color: white;
+  transition: all 0.3s ease-in-out;
+}
+
+.card-input-container:focus-within {
+  border-color: #4a6834;
+  box-shadow: 0px 0px 8px rgba(46, 72, 44, 0.5);
+}
+
+/* Botón de pago */
+.payment-button {
+  background-color: #2e482c !important;
+  color: white !important;
+  font-size: 1.1rem !important;
+  padding: 10px !important;
+  border-radius: 6px !important;
+  transition: background 0.3s ease-in-out !important;
+}
+
+.payment-button:hover {
+  background-color: #1a3218 !important;
+}
+
+/* Spinner de carga */
+.payment-spinner {
+  width: 24px;
+  height: 24px;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  display: inline-block;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Mensaje de error en el pago */
+.payment-error {
+  color: red;
+  font-size: 1rem;
+  text-align: center;
+  margin-top: 10px;
+}
+
+/* ======= Success Page Styles ======= */
+.success-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 80vh;
+  text-align: center;
+  background-image: url('/src/assets/images/fondo-home.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
+.success-card {
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);
+  padding: 30px;
+  max-width: 400px;
+}
+
+.success-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+}
+
+.success-icon {
+  font-size: 60px !important;
+  color: #2e7d32 !important;
+}
+
+.success-message {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #2e482c;
+}
+
+.success-button {
+  background-color: #2e482c !important;
+  color: white !important;
+  font-size: 1.2rem !important;
+  padding: 10px 20px !important;
+  border-radius: 6px !important;
+  transition: background 0.3s ease-in-out !important;
+}
+
+.success-button:hover {
+  background-color: #1a3218 !important;
+}
+
+/* ======= Responsive Styles ======= */
+@media (max-width: 768px) {
+  .checkout-content {
+    flex-direction: column;
+    align-items: center;
+  }
+}
