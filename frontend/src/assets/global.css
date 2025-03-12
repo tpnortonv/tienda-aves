@@ -972,8 +972,10 @@ textarea:focus {
 /* ======= Checkout Styles ======= */
 .checkout-title {
   text-align: center;
-  font-size: 2.5rem !important;
-  padding: 30px;
+  font-size: 2.7rem !important;
+  padding: -50px;
+  position: relative;
+  top: -20px; 
   color: white;
   font-family: 'Playfair Display', cursive !important;
   text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.6);
@@ -992,7 +994,6 @@ textarea:focus {
   background-position: center;
   background-repeat: no-repeat;
   background-attachment: fixed;
-  padding: 20px;
 }
 
 /* 🔹 Contenedor de los elementos dentro del checkout */
@@ -1003,7 +1004,6 @@ textarea:focus {
   justify-content: center; /* Centra verticalmente */
   width: 100%;
   max-width: 900px; /* Ajusta el ancho para mantenerlo legible */
-  gap: 20px; /* Espaciado entre los elementos */
 }
 
 /* 🔹 Asegurar que las tarjetas de resumen y pago estén alineadas */
@@ -1012,14 +1012,16 @@ textarea:focus {
   max-width: 450px; /* Ajusta el tamaño máximo de las tarjetas */
   text-align: center; /* Asegura que el contenido esté alineado */
   padding: 20px;
-  border-radius: 8px;
+  border-radius: 10px !important;
   background: white;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);
+  border: 3px solid#2e482c;
 }
 
 .checkout-subtitle {
-  font-size: 1.4rem;
+  font-size: 2rem !important;
   font-weight: bold;
+  font-family: 'playfair display', cursive !important;
   color: #2e482c;
   margin-bottom: 10px;
 }
@@ -1063,11 +1065,13 @@ textarea:focus {
 /* ======= Payment Form Styles ======= */
 .payment-card {
   background: white;
-  border-radius: 10px;
+  border-radius: 10px !important;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);
   padding: 20px;
   width: 100%;
   max-width: 420px;
+  border: 3px solid#2e482c;
+
 }
 
 .payment-title {
@@ -1078,9 +1082,6 @@ textarea:focus {
 }
 
 .payment-form {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
   margin-top: 20px;
 }
 
@@ -1100,16 +1101,24 @@ textarea:focus {
 
 /* Botón de pago */
 .payment-button {
-  background-color: #2e482c !important;
+  font-size: 1.5rem !important;
+  padding: 10px 20px;
+  background: #2e482c !important;
   color: white !important;
-  font-size: 1.1rem !important;
-  padding: 10px !important;
-  border-radius: 6px !important;
-  transition: background 0.3s ease-in-out !important;
+  cursor: pointer;
+  transition: all 0.3s;
+  font-family: 'Playfair Display', cursive !important;
+  width: 200px;
+  text-align: center !important;
+  display: block; /* Hace que el botón respete margin auto */
+  margin: 20px auto 0 auto !important; /* Lo centra horizontalmente */
+  box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.5);
 }
 
 .payment-button:hover {
-  background-color: #1a3218 !important;
+  background-color: white !important;
+  color: #2e482c !important;
+  border: 2px solid#2e482c;  
 }
 
 /* Spinner de carga */
@@ -1133,11 +1142,12 @@ textarea:focus {
 }
 
 /* Mensaje de error en el pago */
-.payment-error {
-  color: red;
+.payment-success {
+  color: #2e482c;
   font-size: 1rem;
   text-align: center;
   margin-top: 10px;
+  padding: 10px;
 }
 
 /* ======= Success Page Styles ======= */
@@ -1156,10 +1166,11 @@ textarea:focus {
 
 .success-card {
   background: white;
-  border-radius: 10px;
+  border-radius: 15px !important;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);
   padding: 30px;
   max-width: 400px;
+  border: 3px solid#2e482c;
 }
 
 .success-content {
@@ -1181,16 +1192,24 @@ textarea:focus {
 }
 
 .success-button {
-  background-color: #2e482c !important;
+  font-size: 1rem !important;
+  padding: 10px 20px;
+  background: #2e482c !important;
   color: white !important;
-  font-size: 1.2rem !important;
-  padding: 10px 20px !important;
-  border-radius: 6px !important;
-  transition: background 0.3s ease-in-out !important;
+  cursor: pointer;
+  transition: all 0.3s;
+  font-family: 'Playfair Display', cursive !important;
+  width: 200px;
+  text-align: center !important;
+  display: block; /* Hace que el botón respete margin auto */
+  margin: 20px auto 0 auto !important; /* Lo centra horizontalmente */
+  box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.5);
 }
 
 .success-button:hover {
-  background-color: #1a3218 !important;
+  background-color: white !important;
+  color: #2e482c !important;
+  border: 2px solid#2e482c;  
 }
 
 /* ======= Responsive Styles ======= */

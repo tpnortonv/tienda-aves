@@ -100,7 +100,7 @@ const CheckoutForm = ({ user, totalAmount }) => {
               {isProcessing ? <CircularProgress size={24} className="payment-spinner" /> : "Pagar"}
             </Button>
 
-            {message && <Typography className="payment-error">{message}</Typography>}
+            {message && <Typography className="payment-success">{message}</Typography>}
           </Stack>
         </Box>
       </CardContent>
