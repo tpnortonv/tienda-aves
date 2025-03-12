@@ -1,5 +1,5 @@
 import React, { createContext, useState, useEffect, useContext } from "react";
-import { getCart, createOrUpdateCart, removeProductFromCart } from "../services/cartServiceF";
+import { getCart, createOrUpdateCart, removeProductFromCart, clearCartFromBackend } from "../services/cartServiceF";
 import { AuthContext } from "./AuthContext";
 
 export const CartContext = createContext();
@@ -88,11 +88,18 @@ export const CartProvider = ({ children }) => {
     }
   };
 
-  // 🔹 Función para limpiar el carrito después del pago exitoso
-  const clearCart = () => {
+  const clearCart = async () => {
     console.log("🛒 Limpiando carrito después del pago exitoso...");
-    setCart([]);
-    localStorage.removeItem("cart"); // 🔥 También limpiar localStorage
+  
+    if (!user || !user.id || !user.token) return;
+  
+    try {
+      await clearCartFromBackend(user.id, user.token);
+      setCart([]); 
+      localStorage.removeItem("cart"); // 🔥 También limpiar localStorage
+    } catch (error) {
+      console.error("❌ Error al limpiar el carrito:", error);
+    }
   };
 
   return (

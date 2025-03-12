@@ -96,4 +96,23 @@ const removeProductFromCart = async (req, res) => {
   }
 };
 
-module.exports = { createOrUpdateCart, getCart, removeProductFromCart }; // Usamos module.exports
+// 🆕 Nueva función para eliminar todo el carrito después del pago
+const deleteCart = async (req, res) => {
+  const { userId } = req.params;
+
+  try {
+    const cart = await Cart.findOne({ userId });
+
+    if (!cart) {
+      return res.status(404).json({ message: 'Carrito no encontrado' });
+    }
+
+    await Cart.deleteOne({ userId });
+
+    res.status(200).json({ message: 'Carrito eliminado correctamente' });
+  } catch (error) {
+    res.status(500).json({ message: 'Error al eliminar el carrito', error });
+  }
+};
+
+module.exports = { createOrUpdateCart, getCart, removeProductFromCart, deleteCart };

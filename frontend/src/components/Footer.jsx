@@ -8,7 +8,15 @@ const Footer = () => {
       <p>Avista-Chile</p>
       <div className="footer-info">
         <p>
-          <img src={pinIcon} alt="Ubicación" className="icon" /> Camino a Punta de Lobos, Pichilemu
+          <img src={pinIcon} alt="Ubicación" className="icon" />{" "}
+          <a
+            href="https://maps.app.goo.gl/9LbPA7d9JeTMfxqcA"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="Link-ubi"
+            style={{ color: "white" }}
+          > Puerto Prat, Natales, Magallanes y Antártica Chilena
+          </a>
         </p>
         <p>
           <img src={emailIcon} alt="Correo" className="icon" /> contacto@avista-chile.cl
@@ -21,4 +29,3 @@ const Footer = () => {
 export default Footer;
 
 
-  

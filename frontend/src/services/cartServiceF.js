@@ -67,6 +67,24 @@ export const removeProductFromCart = async (userId, productId, token) => {
   }
 };
 
+// frontend/services/cartServiceF.js
+export const clearCartFromBackend = async (userId, token) => {
+  try {
+    console.log(`🗑 Eliminando todo el carrito del usuario ${userId}`);
+
+    const response = await api.delete(`/cart/${userId}`, {
+      headers: { "x-auth-token": token },
+    });
+
+    console.log("✅ Carrito eliminado correctamente:", response.data);
+    return response.data;
+  } catch (error) {
+    console.error("❌ Error en `clearCartFromBackend()`:", error.response?.data || error.message);
+    throw error;
+  }
+};
+
+
 
 
 

@@ -1172,7 +1172,7 @@ header nav a:hover {
   color: white;
   font-family: 'Playfair Display', cursive !important;
   text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.6);
-  margin-bottom: 20px;
+  margin: 20px !important;
 }
 
 .checkout-subtitle {

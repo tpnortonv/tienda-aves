@@ -104,7 +104,7 @@ const Home = () => {
             <p>
               Somos Avista Chile, un proyecto nacido entre pajareos, surf y amor por la naturaleza. <br /><br />
               <strong>¡No más!</strong> Ahora les toca venir a Chile a pajarear. <br /><br />
-              Soy <strong>Thomas Norton</strong>, y con mi pareja <strong>Jacinta Montqalva</strong> creamos un servicio de avistamiento de aves guiado. <br /><br />
+              Soy <strong>Thomas Norton</strong>, y con mi pareja <strong>Jacinta Montalva</strong> creamos un servicio de avistamiento de aves guiado. <br /><br />
               <strong>¡Nosotros guiamos, tú disfrutas! 🌿🦜</strong>
             </p>
           </div>
