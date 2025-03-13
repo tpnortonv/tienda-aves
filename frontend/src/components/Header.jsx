@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import logo from "/src/assets/images/pajaro1.png";
+import cartIcon from "/src/assets/images/cart.png";
 
 const Header = () => {
   const { user, handleLogout } = useContext(AuthContext);
@@ -37,7 +38,7 @@ const Header = () => {
           )}
           <button onClick={handleServicesClick} className="home-btn">Servicios</button>
           <button className="cart-btn" onClick={() => navigate("/cart")}>
-            <img src="/src/assets/images/cart.png" alt="Carrito" className="cart-icon" />
+            <img src={cartIcon} alt="Carrito" className="cart-icon" />
           </button>
         </div>
       </nav>
